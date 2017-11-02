@@ -25,3 +25,5 @@ think of. Additionally, we think it could be used as an inspirational tool. An
 artist could be playing around with some of the parameters, and something 
 could strike them as being very unique or unusual, which could lead them to 
 creating their own artwork based on the generated image.
+
+We also considered some of the risks concerning this project, namely the performance aspect and the issues of neural networks in general. Performance might be an problem, because the deepdream operations can take a long time and utilize a lot of computer resources. The algorithms also might not meet the users' expectations, which we (and they) will have to consider. We included some discussion on these points in the new proposal document. 
