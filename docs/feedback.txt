@@ -1,0 +1,27 @@
+Raw feedback:
+- What is the use case for the product? Who will use it and why would they need/want to use it?
+- How will users know how to operate the product?
+- The UI is good
+- How will you get all of this into Photoshop/GIMP?
+
+What we took from this:
+A lot of these points were areas that we had already been thinking about, but 
+it was still very helpful to hear the concerns that an external party has. 
+Fortunately, GIMP allows for Python extensions, so that shouldn't be too big 
+of an issue. Additionally, many of the ML tools that we will be using also are 
+written in Python. As for product operation, we will provide extensive 
+documentation on how to use the plugin, and hopefully that will cover 
+everything. The inclusion of presets will also make this much more 
+plug-and-play, as users won't need to know exactly what is going on and how it 
+works.
+
+The question of "who" will use this is important, but so is the question of 
+"why". Why is this something that artists would want to use? Of course, we 
+can't guarantee that this is something that everyone would want to use 
+(bringing up the whole ethical debate regarding computers in art, and whether 
+generative art is truly "creative" or not), but we think this would be an 
+interesting tool to manipulate images in ways that a human simply wouldn't 
+think of. Additionally, we think it could be used as an inspirational tool. An 
+artist could be playing around with some of the parameters, and something 
+could strike them as being very unique or unusual, which could lead them to 
+creating their own artwork based on the generated image.
