@@ -91,9 +91,9 @@ def calc_grad_tiled(img, t_grad, tile_size=512):
 
 
 img_noise = np.random.uniform(size=(224,224,3)) + 100.0
-def render_deepdream(t_obj, img0=img_noise,
+def render_deepdream(t_obj, target, img0=img_noise,
                      iter_n=10, step=1.5, octave_n=6, octave_scale=1.4):
-    t_score = tf.reduce_mean(t_obj) # defining the optimization objective
+    t_score = tf.tensordot(t_obj, target) # defining the optimization objective
     t_grad = tf.gradients(t_score, t_input)[0] # behold the power of automatic differentiation!
 
     # split the image into a number of octaves
@@ -119,28 +119,24 @@ def render_deepdream(t_obj, img0=img_noise,
     clear_output()
     showarray(img/255.0)
 
-layer = 'mixed4d_3x3_bottleneck_pre_relu'#'softmax0'#
-layer = 'mixed4d_5x5_bottleneck_pre_relu'
+layer = T('softmax0')
 
-print(T(layer).get_shape())
+print("loading class weights from classes.csv")
+with open("classes.csv") as textFile:
+    class_weights = [line.split(',') for line in textFile]
 
-print("loading class weights from feats.txt")
-with open("feats.txt") as textFile:
-    class_weights = [line for line in textFile]
-
-classes = None
-
+target = np.zeros(1024)
 for i in xrange(len(class_weights)):
-	if float(class_weights[i]) != 0:
-		print(i, class_weights[i])
-		if classes == None:
-			classes = T(layer)[:,:,:,i] * float(class_weights[i])
-		else:
-			classes += T(layer)[:,:,:,i] * float(class_weights[i])
+	if float(class_weights[i][1]) != 0:
+		print(class_weights[i])
+		target[i] = float(class_weights[i][1])
 
-assert classes != None, "No classes selected"
+assert target.sum() > 0, "No classes selected"
+target /= target.sum()
+
+target = tf.convert_to_tensor(target)
 
 img0 = PIL.Image.open(sys.argv[1])
 img0 = np.float32(img0)
-render_deepdream(classes, img0)
+render_deepdream(layer, target, img0)
 
