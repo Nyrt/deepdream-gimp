@@ -93,7 +93,7 @@ def calc_grad_tiled(img, t_grad, tile_size=512):
 img_noise = np.random.uniform(size=(224,224,3)) + 100.0
 def render_deepdream(t_obj, target, img0=img_noise,
                      iter_n=10, step=1.5, octave_n=6, octave_scale=1.4):
-    t_score = tf.tensordot(t_obj, target) # defining the optimization objective
+    t_score = tf.tensordot(t_obj, target, 1) # defining the optimization objective
     t_grad = tf.gradients(t_score, t_input)[0] # behold the power of automatic differentiation!
 
     # split the image into a number of octaves
@@ -108,7 +108,7 @@ def render_deepdream(t_obj, target, img0=img_noise,
     
     # generate details octave by octave
     for octave in range(octave_n):
-    	print(octave)
+        print(octave)
         if octave>0:
             hi = octaves[-octave]
             img = resize(img, hi.shape[:2])+hi
@@ -127,9 +127,9 @@ with open("classes.csv") as textFile:
 
 target = np.zeros(1024)
 for i in xrange(len(class_weights)):
-	if float(class_weights[i][1]) != 0:
-		print(class_weights[i])
-		target[i] = float(class_weights[i][1])
+    if float(class_weights[i][1]) != 0:
+        print(class_weights[i])
+        target[i] = float(class_weights[i][1])
 
 assert target.sum() > 0, "No classes selected"
 target /= target.sum()

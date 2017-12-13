@@ -108,7 +108,7 @@ def render_deepdream(t_obj, img0=img_noise,
     
     # generate details octave by octave
     for octave in range(octave_n):
-    	print(octave)
+        print(octave)
         if octave>0:
             hi = octaves[-octave]
             img = resize(img, hi.shape[:2])+hi
@@ -116,8 +116,8 @@ def render_deepdream(t_obj, img0=img_noise,
             g = calc_grad_tiled(img, t_grad)
             img += g*(step / (np.abs(g).mean()+1e-7))
             print('.',end = ' ')
-    clear_output()
-    showarray(img/255.0)
+        clear_output()
+        showarray(img/255.0)
 
 layer = 'mixed4d_3x3_bottleneck_pre_relu'#'softmax0'#
 layer = 'mixed4d_5x5_bottleneck_pre_relu'
@@ -131,12 +131,12 @@ with open("feats.txt") as textFile:
 classes = None
 
 for i in xrange(len(class_weights)):
-	if float(class_weights[i]) != 0:
-		print(i, class_weights[i])
-		if classes == None:
-			classes = T(layer)[:,:,:,i] * float(class_weights[i])
-		else:
-			classes += T(layer)[:,:,:,i] * float(class_weights[i])
+    if float(class_weights[i]) != 0:
+        print(i, class_weights[i])
+        if classes == None:
+            classes = T(layer)[:,:,:,i] * float(class_weights[i])
+        else:
+            classes += T(layer)[:,:,:,i] * float(class_weights[i])
 
 assert classes != None, "No classes selected"
 
