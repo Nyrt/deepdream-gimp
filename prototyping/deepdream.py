@@ -92,7 +92,7 @@ def calc_grad_tiled(img, t_grad, tile_size=512):
 
 img_noise = np.random.uniform(size=(224,224,3)) + 100.0
 def render_deepdream(t_obj, img0=img_noise,
-                     iter_n=10, step=1.5, octave_n=6, octave_scale=1.4):
+                     iter_n=15, step=1.5, octave_n=10, octave_scale=1.2):
     t_score = tf.reduce_mean(t_obj) # defining the optimization objective
     t_grad = tf.gradients(t_score, t_input)[0] # behold the power of automatic differentiation!
 
