@@ -19,7 +19,7 @@ We will develop an artist-friendly, yet powerful interface for the Deepdream alg
 
 ## Sponsor
 
-We do not have a sponsor yet, however we have plans to reach out to the SMFA to find interested potential sponsors.
+Our sponsor is Rick Roelke, founder of Metlogix Inc., a company that works with metrology software for video and optical measuring systems. His experience with user interfaces as well fine arts makes him a great customer for our product, and he will offer guidance on feature design and the overall user experience.
 
 
 See project proposal for additional details
