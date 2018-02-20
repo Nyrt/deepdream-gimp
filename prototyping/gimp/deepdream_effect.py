@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 
+from __future__ import print_function
 import math
 from gimpfu import *
 
@@ -8,7 +9,6 @@ from gimpfu import *
 
 
 
-from __future__ import print_function
 import os
 from io import BytesIO
 import numpy as np
@@ -185,13 +185,13 @@ def python_deepdream(timg, tdrawable, bx=9, by=9,
     # gimp.delete(img)
 
 register(
-        "python_fu_clothify",
+        "python_fu_deepdream",
         "Make the specified layer look like it is printed on cloth",
         "Make the specified layer look like it is printed on cloth",
         "James Henstridge",
         "James Henstridge",
         "1997-1999",
-        "<Image>/Filters/Artistic/_Deepdream...",
+        "<Image>/Filters/Artistic/Deepdream...",
         "RGB*, GRAY*",
         [
                 (PF_INT, "x_blur", "X blur", 9),
