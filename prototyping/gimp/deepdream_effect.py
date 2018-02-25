@@ -152,9 +152,13 @@ assert classes != None, "No classes selected"
 # Returns NP array (N,bpp) (single vector ot triplets)
 def channelData(layer):
     region=layer.get_pixel_rgn(0, 0, layer.width,layer.height)
+    print(layer.width)
+    print(layer.height)
     pixChars=region[:,:] # Take whole layer
     bpp=region.bpp
-    return np.frombuffer(pixChars,dtype=np.uint8).reshape(len(pixChars)/bpp,bpp)
+    print(len(pixChars))
+    print(bpp)
+    return np.frombuffer(pixChars,dtype=np.uint8).reshape(layer.width, layer.height, bpp)
 
 def createResultLayer(image,name,result):
     rlBytes=np.uint8(result).tobytes();
@@ -178,9 +182,11 @@ def python_deepdream(timg, tdrawable, bx=9, by=9,
 
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
-    resut = render_deepdream(classes, img0)
 
-    createResultsLayer(tdrawable, "deepdream", result)
+    print(img0.shape)
+    result = render_deepdream(classes, img0)
+
+    createResultLayer(tdrawable, "deepdream", result)
 
     # gimp.delete(img)
 
