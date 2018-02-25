@@ -186,7 +186,7 @@ def python_deepdream(timg, tdrawable, bx=9, by=9,
     print(img0.shape)
     result = render_deepdream(classes, img0)
 
-    createResultLayer(tdrawable, "deepdream", result)
+    createResultLayer(timg, "deepdream", result)
 
     # gimp.delete(img)
 
