@@ -98,7 +98,7 @@ def calc_grad_tiled(img, t_grad, tile_size=512):
 
 img_noise = np.random.uniform(size=(224,224,3)) + 100.0
 def render_deepdream(t_obj, img0=img_noise,
-                     iter_n=15, step=1.5, octave_n=10, octave_scale=1.2):
+                     iter_n=15, step=1.5, octave_n=1, octave_scale=1.2):
     t_score = tf.reduce_mean(t_obj) # defining the optimization objective
     t_grad = tf.gradients(t_score, t_input)[0] # behold the power of automatic differentiation!
 
@@ -123,7 +123,7 @@ def render_deepdream(t_obj, img0=img_noise,
             img += g*(step / (np.abs(g).mean()+1e-7))
             print('.',end = ' ')
         clear_output()
-        # showarray(img/255.0)
+        #showarray(img/255.0)
     return img/255.0
 
 layer = 'mixed4d_3x3_bottleneck_pre_relu'#'softmax0'#
@@ -154,10 +154,16 @@ def channelData(layer):
     region=layer.get_pixel_rgn(0, 0, layer.width,layer.height)
     pixChars=region[:,:] # Take whole layer
     bpp=region.bpp
-    return np.frombuffer(pixChars,dtype=np.uint8).reshape(layer.width, layer.height, bpp)
+    print("doink")
+    print(np.frombuffer(pixChars,dtype=np.uint8).shape)
+
+    return np.frombuffer(pixChars,dtype=np.uint8).reshape(layer.height, layer.width, bpp)#.transpose((1,0,2))
 
 def createResultLayer(image,name,result):
     rlBytes=np.uint8(result).tobytes();
+
+    print(image.width, image.height)
+
     rl=gimp.Layer(image,name,image.width,image.height,image.active_layer.type,100,NORMAL_MODE)
     region=rl.get_pixel_rgn(0, 0, rl.width,rl.height,True)
     region[:,:]=rlBytes
@@ -166,8 +172,7 @@ def createResultLayer(image,name,result):
 
 
 
-def python_deepdream(timg, tdrawable, bx=9, by=9,
-                    azimuth=135, elevation=45, depth=3):
+def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale):
     width = tdrawable.width
     height = tdrawable.height
 
@@ -177,9 +182,10 @@ def python_deepdream(timg, tdrawable, bx=9, by=9,
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
 
+    print(img0.shape)
 
     print(np.mean(img0))
-    result = render_deepdream(classes, img0)
+    result = render_deepdream(classes, img0, iter_n, step, octave_n, octave_scale)
     print(np.mean(result))
     result = np.clip(result, 0, 1)
 
@@ -197,11 +203,10 @@ register(
         "<Image>/Filters/Artistic/Deepdream...",
         "RGB*, GRAY*",
         [
-                (PF_INT, "x_blur", "X blur", 9),
-                (PF_INT, "y_blur", "Y blur", 9),
-                (PF_INT, "azimuth", "Azimuth", 135),
-                (PF_INT, "elevation", "Elevation", 45),
-                (PF_INT, "depth", "Depth", 3)
+                (PF_INT, "iter_n", "Iterations", 15),
+                (PF_FLOAT, "step", "Strength", 1.5),
+                (PF_INT, "octave_n", "Number of Octaves", 5),
+                (PF_FLOAT, "octave_scale", "Octave Scale", 1.2)
         ],
         [],
         python_deepdream)
