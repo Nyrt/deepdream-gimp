@@ -142,5 +142,8 @@ assert classes != None, "No classes selected"
 
 img0 = PIL.Image.open(sys.argv[1])
 img0 = np.float32(img0)
+
+print(img0.shape)
+
 render_deepdream(classes, img0)
 
