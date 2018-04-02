@@ -92,6 +92,7 @@ def calc_grad_tiled(img, t_grad, tile_size=512):
     for y in range(0, max(h-sz//2, sz),sz):
         for x in range(0, max(w-sz//2, sz),sz):
             sub = img_shift[y:y+sz,x:x+sz]
+            print("sub.shape", sub.shape)
             g = sess.run(t_grad, {t_input:sub})
             grad[y:y+sz,x:x+sz] = g
     return np.roll(np.roll(grad, -sx, 1), -sy, 0)
@@ -100,6 +101,9 @@ def calc_grad_tiled(img, t_grad, tile_size=512):
 img_noise = np.random.uniform(size=(224,224,3)) + 100.0
 def render_deepdream(t_obj, img0=img_noise,
                      iter_n=15, step=1.5, octave_n=1, octave_scale=1.2):
+    
+
+
     t_score = tf.reduce_mean(t_obj) # defining the optimization objective
     t_grad = tf.gradients(t_score, t_input)[0] # behold the power of automatic differentiation!
 
@@ -130,8 +134,6 @@ def render_deepdream(t_obj, img0=img_noise,
 layer ='softmax0'
 
 
-print(T(layer).get_shape())
-
 print("loading class names")
 with open("imagenet_comp_graph_label_strings.txt") as textFile:
     class_names = [line for line in textFile]
@@ -147,15 +149,11 @@ def channelData(layer):
     region=layer.get_pixel_rgn(0, 0, layer.width,layer.height)
     pixChars=region[:,:] # Take whole layer
     bpp=region.bpp
-    print("doink")
-    print(np.frombuffer(pixChars,dtype=np.uint8).shape)
 
     return np.frombuffer(pixChars,dtype=np.uint8).reshape(layer.height, layer.width, bpp)#.transpose((1,0,2))
 
 def createResultLayer(image,name,result):
     rlBytes=np.uint8(result).tobytes();
-
-    print(image.width, image.height)
 
     rl=gimp.Layer(image,name,image.width,image.height,image.active_layer.type,100,NORMAL_MODE)
     region=rl.get_pixel_rgn(0, 0, rl.width,rl.height,True)
@@ -166,6 +164,10 @@ def createResultLayer(image,name,result):
 
 
 def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, feature):
+    op = sess.graph.get_operations()
+    for m in op:
+        print(m.values())
+
     width = tdrawable.width
     height = tdrawable.height
 
