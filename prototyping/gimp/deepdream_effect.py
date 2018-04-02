@@ -7,8 +7,6 @@ from gimpfu import *
 
 # Code adapted from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb
 
-
-
 import os
 from io import BytesIO
 import numpy as np
@@ -129,26 +127,18 @@ def render_deepdream(t_obj, img0=img_noise,
         #showarray(img/255.0)
     return img/255.0
 
-layer = 'mixed4d_3x3_bottleneck_pre_relu'#'softmax0'#
-layer = 'mixed4d_5x5_bottleneck_pre_relu'
+layer ='softmax0'
+
 
 print(T(layer).get_shape())
 
-print("loading class weights from feats.txt")
-with open("feats.txt") as textFile:
-    class_weights = [line for line in textFile]
+print("loading class names")
+with open("imagenet_comp_graph_label_strings.txt") as textFile:
+    class_names = [line for line in textFile]
 
-classes = None
 
-for i in xrange(len(class_weights)):
-    if float(class_weights[i]) != 0:
-        print(i, class_weights[i])
-        if classes == None:
-            classes = T(layer)[:,:,:,i] * float(class_weights[i])
-        else:
-            classes += T(layer)[:,:,:,i] * float(class_weights[i])
 
-assert classes != None, "No classes selected"
+
 
 
 
@@ -175,9 +165,11 @@ def createResultLayer(image,name,result):
 
 
 
-def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale):
+def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, feature):
     width = tdrawable.width
     height = tdrawable.height
+
+    target_class = T(layer)[:,feature]
 
     # img = gimp.Image(width, height, RGB)
     # img.disable_undo()
@@ -188,7 +180,7 @@ def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale):
     print(img0.shape)
 
     print(np.mean(img0))
-    result = render_deepdream(classes, img0, iter_n, step, octave_n, octave_scale)
+    result = render_deepdream(target_class, img0, iter_n, step, octave_n, octave_scale)
     print(np.mean(result))
     result = np.clip(result, 0, 1)
 
@@ -209,7 +201,9 @@ register(
                 (PF_INT, "iter_n", "Iterations", 15),
                 (PF_FLOAT, "step", "Strength", 1.5),
                 (PF_INT, "octave_n", "Number of Octaves", 5),
-                (PF_FLOAT, "octave_scale", "Octave Scale", 1.2)
+                (PF_FLOAT, "octave_scale", "Octave Scale", 1.2),
+                (PF_OPTION, "feature", "Class:", 0, class_names)
+
         ],
         [],
         python_deepdream)
