@@ -29,9 +29,12 @@ import tensorflow as tf
 # Try doing this with different models? It might just *work*
 model_fn = 'tensorflow_inception_graph.pb'
 
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+
 # creating TensorFlow session and loading the model
 graph = tf.Graph()
-sess = tf.InteractiveSession(graph=graph)
+sess = tf.InteractiveSession(config=config, graph=graph)
 with tf.gfile.FastGFile(model_fn, 'rb') as f:
     graph_def = tf.GraphDef()
     graph_def.ParseFromString(f.read())
@@ -195,11 +198,11 @@ def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale):
 
 register(
         "python_fu_deepdream",
-        "Make the specified layer look like it is printed on cloth",
-        "Make the specified layer look like it is printed on cloth",
-        "James Henstridge",
-        "James Henstridge",
-        "1997-1999",
+        "Apply deepdream generative art to the specified layer",
+        "Apply deepdream generative art to the specified layer",
+        "Tufts LaserLemon",
+        "Tufts LaserLemon",
+        "2018",
         "<Image>/Filters/Artistic/Deepdream...",
         "RGB*, GRAY*",
         [
