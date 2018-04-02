@@ -80,7 +80,7 @@ resize = tffunc(np.float32, np.int32)(resize)
 
 
 
-def calc_grad_tiled(img, t_grad, tile_size=512):
+def calc_grad_tiled(img, t_grad, tile_size=244):
     '''Compute the value of tensor t_grad over the image in a tiled way.
     Random shifts are applied to the image to blur tile boundaries over 
     multiple iterations.'''
@@ -91,8 +91,13 @@ def calc_grad_tiled(img, t_grad, tile_size=512):
     grad = np.zeros_like(img)
     for y in range(0, max(h-sz//2, sz),sz):
         for x in range(0, max(w-sz//2, sz),sz):
+
+            if x+sz > 244:
+                x = 244 - sz
+            if y+sz > 244:
+                y = 244 - sz
             sub = img_shift[y:y+sz,x:x+sz]
-            print("sub.shape", sub.shape)
+            # print(sub.shape)
             g = sess.run(t_grad, {t_input:sub})
             grad[y:y+sz,x:x+sz] = g
     return np.roll(np.roll(grad, -sx, 1), -sy, 0)
@@ -123,6 +128,9 @@ def render_deepdream(t_obj, img0=img_noise,
         if octave>0:
             hi = octaves[-octave]
             img = resize(img, hi.shape[:2])+hi
+            if img.shape[0] < 244 or img.shape[1] < 244:
+                print("Too small, skipping octave")
+                continue
         for i in range(iter_n):
             g = calc_grad_tiled(img, t_grad)
             img += g*(step / (np.abs(g).mean()+1e-7))
@@ -131,7 +139,7 @@ def render_deepdream(t_obj, img0=img_noise,
         #showarray(img/255.0)
     return img/255.0
 
-layer ='softmax0'
+
 
 
 print("loading class names")
@@ -163,13 +171,15 @@ def createResultLayer(image,name,result):
 
 
 
-def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, feature):
-    op = sess.graph.get_operations()
-    for m in op:
-        print(m.values())
+def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, feature, layer):
+    # op = sess.graph.get_operations()
+    # for m in op:
+    #     print(m.values())
 
     width = tdrawable.width
     height = tdrawable.height
+
+    layer ='softmax%i'%layer
 
     target_class = T(layer)[:,feature]
 
@@ -179,11 +189,11 @@ def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, feat
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
 
-    print(img0.shape)
+    # print(img0.shape)
 
-    print(np.mean(img0))
+    # print(np.mean(img0))
     result = render_deepdream(target_class, img0, iter_n, step, octave_n, octave_scale)
-    print(np.mean(result))
+    # print(np.mean(result))
     result = np.clip(result, 0, 1)
 
     createResultLayer(timg, "deepdream", result*255.0)
@@ -204,7 +214,8 @@ register(
                 (PF_FLOAT, "step", "Strength", 1.5),
                 (PF_INT, "octave_n", "Number of Octaves", 5),
                 (PF_FLOAT, "octave_scale", "Octave Scale", 1.2),
-                (PF_OPTION, "feature", "Class:", 0, class_names)
+                (PF_OPTION, "feature", "Class:", 0, class_names),
+                (PF_OPTION, "head", "Layer:", 0, ["Softmax 0", "Softmax 1", "Softmax 2"])
 
         ],
         [],
