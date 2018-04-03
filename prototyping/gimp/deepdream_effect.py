@@ -151,13 +151,7 @@ def render_deepdream(t_obj, img0=img_noise,
 
 print("loading class names")
 with open("imagenet_comp_graph_label_strings.txt") as textFile:
-    class_names = [line for line in textFile]
-
-
-
-
-
-
+    class_names = [line[:-2] for line in textFile]
 
 # Returns NP array (N,bpp) (single vector ot triplets)
 def channelData(layer):
@@ -218,10 +212,10 @@ register(
         "RGB*, GRAY*",
         [
                 (PF_INT, "iter_n", "Iterations", 15),
-                (PF_FLOAT, "step", "Strength", 1.5),
+                (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
                 (PF_INT, "octave_n", "Number of Octaves", 5),
-                (PF_FLOAT, "octave_scale", "Octave Scale", 1.2),
-                (PF_OPTION, "head", "Layer:", 0, ["Softmax 0", "Softmax 1", "Softmax 2"]),
+                (PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
+                (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
                 (PF_OPTION, "feature", "Class:", 0, class_names)
         ],
         [],
