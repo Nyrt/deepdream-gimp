@@ -92,14 +92,21 @@ def calc_grad_tiled(img, t_grad, tile_size=244):
     for y in range(0, max(h-sz//2, sz),sz):
         for x in range(0, max(w-sz//2, sz),sz):
 
-            if x+sz > 244:
-                x = 244 - sz
-            if y+sz > 244:
-                y = 244 - sz
             sub = img_shift[y:y+sz,x:x+sz]
+
+            s = sub.shape
+            # print(s)
+            pad_x = 244 - s[0]
+            pad_x *= pad_x > 0
+            pad_y = 244 - s[1]
+            pad_y *= pad_y > 0
+
+            sub=np.pad(sub, ((0,pad_x),(0,pad_y),(0,0)), 'reflect')
+            # print(sub.shape)
+
             # print(sub.shape)
             g = sess.run(t_grad, {t_input:sub})
-            grad[y:y+sz,x:x+sz] = g
+            grad[y:y+sz,x:x+sz] = g[:s[0],:s[1]]
     return np.roll(np.roll(grad, -sx, 1), -sy, 0)
 
 
@@ -214,9 +221,8 @@ register(
                 (PF_FLOAT, "step", "Strength", 1.5),
                 (PF_INT, "octave_n", "Number of Octaves", 5),
                 (PF_FLOAT, "octave_scale", "Octave Scale", 1.2),
-                (PF_OPTION, "feature", "Class:", 0, class_names),
-                (PF_OPTION, "head", "Layer:", 0, ["Softmax 0", "Softmax 1", "Softmax 2"])
-
+                (PF_OPTION, "head", "Layer:", 0, ["Softmax 0", "Softmax 1", "Softmax 2"]),
+                (PF_OPTION, "feature", "Class:", 0, class_names)
         ],
         [],
         python_deepdream)
