@@ -139,6 +139,8 @@ def render_deepdream(t_obj, img0=img_noise,
                 print("Too small, skipping octave")
                 continue
         for i in range(iter_n):
+            pdb.gimp_progress_update(float(i + octave * iter_n )/float(iter_n * octave_n))
+
             g = calc_grad_tiled(img, t_grad)
             img += g*(step / (np.abs(g).mean()+1e-7))
             print('.',end = ' ')
@@ -151,7 +153,7 @@ def render_deepdream(t_obj, img0=img_noise,
 
 print("loading class names")
 with open("imagenet_comp_graph_label_strings.txt") as textFile:
-    class_names = [line[:-2] for line in textFile]
+    class_names = [line[:-1] for line in textFile]
 
 # Returns NP array (N,bpp) (single vector ot triplets)
 def channelData(layer):
