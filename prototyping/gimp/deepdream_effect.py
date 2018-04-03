@@ -178,7 +178,7 @@ def createResultLayer(image,name,result):
 
 
 
-def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, feature, layer):
+def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, layer, feature):
     # op = sess.graph.get_operations()
     # for m in op:
     #     print(m.values())
