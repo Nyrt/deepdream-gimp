@@ -16,6 +16,13 @@ from IPython.display import clear_output, Image, display, HTML
 import sys
 
 import tensorflow as tf
+try:
+    # for Python2
+    import Tkinter as tk  ## notice capitalized T in Tkinter 
+except ImportError:
+    # for Python3
+    import tkinter as tk
+
 
 # Get inception model
 # Note: add to gitignore
@@ -112,7 +119,7 @@ def calc_grad_tiled(img, t_grad, tile_size=244):
 
 img_noise = np.random.uniform(size=(224,224,3)) + 100.0
 def render_deepdream(t_obj, img0=img_noise,
-                     iter_n=15, step=1.5, octave_n=1, octave_scale=1.2):
+                     iter_n=15, step=1.5, octave_n=10, octave_scale=1.2):
     
 
 
@@ -174,10 +181,14 @@ def createResultLayer(image,name,result):
 
 
 
-def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, layer, feature):
+def python_deepdream(timg, tdrawable, iter_n, step, layer, feature):
     # op = sess.graph.get_operations()
     # for m in op:
     #     print(m.values())
+
+    top = tk.Tk()
+    # Code to add widgets will go here...
+    top.mainloop()
 
     width = tdrawable.width
     height = tdrawable.height
@@ -195,7 +206,7 @@ def python_deepdream(timg, tdrawable, iter_n, step, octave_n, octave_scale, laye
     # print(img0.shape)
 
     # print(np.mean(img0))
-    result = render_deepdream(target_class, img0, iter_n, step, octave_n, octave_scale)
+    result = render_deepdream(target_class, img0, iter_n, step)
     # print(np.mean(result))
     result = np.clip(result, 0, 1)
 
@@ -213,10 +224,10 @@ register(
         "<Image>/Filters/Artistic/Deepdream...",
         "RGB*, GRAY*",
         [
-                (PF_INT, "iter_n", "Iterations", 15),
+                (PF_INT, "iter_n", "Detail", 15),
                 (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
-                (PF_INT, "octave_n", "Number of Octaves", 5),
-                (PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
+                #(PF_INT, "octave_n", "Number of Octaves", 5),
+                #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
                 (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
                 (PF_OPTION, "feature", "Class:", 0, class_names)
         ],
