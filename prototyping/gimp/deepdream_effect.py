@@ -18,10 +18,11 @@ import sys
 import tensorflow as tf
 try:
     # for Python2
-    import Tkinter as tk  ## notice capitalized T in Tkinter 
+    from Tkinter import * ## notice capitalized T in Tkinter
 except ImportError:
     # for Python3
-    import tkinter as tk
+    from tkinter import *
+from ttk import *
 
 
 # Get inception model
@@ -179,15 +180,25 @@ def createResultLayer(image,name,result):
     image.add_layer(rl,0)
     gimp.displays_flush()
 
+class gui(Tk):
+    def __init__(self, *args, **kwargs):
+        Tk.__init__(self, *args, **kwargs)
+        class_select = Treeview()
+        i = 0
+        for class_name in class_names:
+            class_select.insert("", i, text=class_name)
+            i += 1
+        class_select.pack()
 
 
-def python_deepdream(timg, tdrawable, iter_n, step, layer, feature):
+
+def python_deepdream(timg, tdrawable):#, iter_n, step, layer, feature):
     # op = sess.graph.get_operations()
     # for m in op:
     #     print(m.values())
 
-    top = tk.Tk()
-    # Code to add widgets will go here...
+    top = gui()
+ 
     top.mainloop()
 
     width = tdrawable.width
@@ -221,15 +232,15 @@ register(
         "Tufts LaserLemon",
         "Tufts LaserLemon",
         "2018",
-        "<Image>/Filters/Artistic/Deepdream...",
+        "<Image>/Filters/Deepdream...",
         "RGB*, GRAY*",
         [
-                (PF_INT, "iter_n", "Detail", 15),
-                (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
-                #(PF_INT, "octave_n", "Number of Octaves", 5),
-                #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
-                (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
-                (PF_OPTION, "feature", "Class:", 0, class_names)
+                # (PF_INT, "iter_n", "Detail", 15),
+                # (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
+                # #(PF_INT, "octave_n", "Number of Octaves", 5),
+                # #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
+                # (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
+                # (PF_OPTION, "feature", "Class:", 0, class_names)
         ],
         [],
         python_deepdream)
