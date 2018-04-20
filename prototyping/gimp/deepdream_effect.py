@@ -192,7 +192,7 @@ class gui(Tk):
 
 
 
-def python_deepdream(timg, tdrawable):#, iter_n, step, layer, feature):
+def python_deepdream(timg, tdrawable, iter_n, step, layer, feature):
     # op = sess.graph.get_operations()
     # for m in op:
     #     print(m.values())
@@ -235,12 +235,12 @@ register(
         "<Image>/Filters/Deepdream...",
         "RGB*, GRAY*",
         [
-                # (PF_INT, "iter_n", "Detail", 15),
-                # (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
-                # #(PF_INT, "octave_n", "Number of Octaves", 5),
-                # #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
-                # (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
-                # (PF_OPTION, "feature", "Class:", 0, class_names)
+                (PF_INT, "iter_n", "Detail", 15),
+                (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
+                #(PF_INT, "octave_n", "Number of Octaves", 5),
+                #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
+                (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
+                (PF_OPTION, "feature", "Class:", 0, class_names)
         ],
         [],
         python_deepdream)
