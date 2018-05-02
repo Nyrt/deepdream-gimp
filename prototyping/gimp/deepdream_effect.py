@@ -205,9 +205,13 @@ def python_deepdream(timg, tdrawable, iter_n, step, layer, features):
 
     layer ='softmax%i'%layer
 
-    for feature in features:
+    target_class = T(layer)[:,int(features[0][1:], 16) - 1]
+
+    for feature in features[1:]:
         feature = int(feature[1:], 16) - 1
-        target_class = T(layer)[:,feature]
+        target_class += T(layer)[:,feature]
+
+    print(target_class)
 
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
