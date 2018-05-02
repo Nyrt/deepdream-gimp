@@ -182,13 +182,6 @@ def createResultLayer(image,name,result):
 
 
 def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
-    # op = sess.graph.get_operations()
-    # for m in op:
-    #     print(m.values())
-
-    #top = gui()
- 
-    #top.mainloop()
 
     width = tdrawable.width
     height = tdrawable.height
@@ -197,22 +190,32 @@ def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
 
     target_class = T(layer)[:,feature]
 
-    # img = gimp.Image(width, height, RGB)
-    # img.disable_undo()
-
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
 
-    # print(img0.shape)
-
-    # print(np.mean(img0))
     result = render_deepdream(target_class, img0, iter_n, step)
-    # print(np.mean(result))
     result = np.clip(result, 0, 1)
 
     createResultLayer(timg, "deepdream", result*255.0)
 
-    # gimp.delete(img)
+def python_deepdream(timg, tdrawable, iter_n, step, layer, features):
+
+    width = tdrawable.width
+    height = tdrawable.height
+
+    layer ='softmax%i'%layer
+
+    for feature in features:
+        feature = int(feature[1:], 16) - 1
+        target_class = T(layer)[:,feature]
+
+    img0 = channelData(tdrawable)
+    img0 = np.float32(img0)
+
+    result = render_deepdream(target_class, img0, iter_n, step)
+    result = np.clip(result, 0, 1)
+
+    createResultLayer(timg, "deepdream", result*255.0)
 
 register(
         "python_fu_deepdream_legacy",
@@ -236,7 +239,7 @@ register(
 
 
 class gui(Tk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, timg, tdrawable, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
         window = Tk()
         window.title("Deep Dream Plugin")
@@ -245,12 +248,12 @@ class gui(Tk):
         detail = StringVar(window)
         detail.set("15")
         Label(window, text="Detail", font=("Arial", 10)).place(x = 20, y = 20)
-        Spinbox(window, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+        Spinbox(window, textvariable=detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
 
         strength = StringVar(window)
         strength.set("1.5")
         Label(window, text="Strength", font=("Arial", 10)).place(x = 20, y = 72)
-        Spinbox(window, from_=0.1, to=10, increment=0.1).place(x = 112, y = 72, width = 128, height = 32)
+        Spinbox(window, textvariable=strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 72, width = 128, height = 32)
 
         depth = StringVar(window)
         depths = ["", "Shallow", "Medium", "Deep"]
@@ -272,48 +275,38 @@ class gui(Tk):
         class_select.place(x = 32, y = 206)
 
 
-        Button(window, text = "Cancel").place(x = 66, y = 450)
-        Button(window, text = "Run").place(x = 156, y = 450)
+        def run():
+            iter_n = int(detail.get())
+            step = float(strength.get())
+            layer = depth.get()
+            if layer == "Deep":
+                layer = 2
+            elif layer == "Medium":
+                layer = 1
+            else:
+                layer = 0
 
-        ## Pass variables to deepdream
-        ## Add progress bar
+            features = class_select.selection()
+            python_deepdream(timg, tdrawable, iter_n, step, layer, features)
+
+        Button(window, text = "Cancel", command = window.destroy).place(x = 66, y = 450)
+        Button(window, text = "Run", command=run).place(x = 156, y = 450)
+
+        ## Create class categories
         ## Add preview
 
 
 
 
-def python_deepdream(timg, tdrawable):
+def python_deepdream_gui(timg, tdrawable):
     # op = sess.graph.get_operations()
     # for m in op:
     #     print(m.values())
 
-    top = gui()
+    top = gui(timg, tdrawable)
  
     top.mainloop()
 
-    width = tdrawable.width
-    height = tdrawable.height
-
-    layer ='softmax%i'%layer
-
-    target_class = T(layer)[:,feature]
-
-    # img = gimp.Image(width, height, RGB)
-    # img.disable_undo()
-
-    img0 = channelData(tdrawable)
-    img0 = np.float32(img0)
-
-    # print(img0.shape)
-
-    # print(np.mean(img0))
-    result = render_deepdream(target_class, img0, iter_n, step)
-    # print(np.mean(result))
-    result = np.clip(result, 0, 1)
-
-    createResultLayer(timg, "deepdream", result*255.0)
-
-    # gimp.delete(img)
 
 register(
         "python_fu_deepdream",
@@ -333,7 +326,7 @@ register(
                 # (PF_OPTION, "feature", "Class:", 0, class_names)
         ],
         [],
-        python_deepdream)
+        python_deepdream_gui)
 
 
 main()
