@@ -180,19 +180,109 @@ def createResultLayer(image,name,result):
     image.add_layer(rl,0)
     gimp.displays_flush()
 
+
+def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
+    # op = sess.graph.get_operations()
+    # for m in op:
+    #     print(m.values())
+
+    #top = gui()
+ 
+    #top.mainloop()
+
+    width = tdrawable.width
+    height = tdrawable.height
+
+    layer ='softmax%i'%layer
+
+    target_class = T(layer)[:,feature]
+
+    # img = gimp.Image(width, height, RGB)
+    # img.disable_undo()
+
+    img0 = channelData(tdrawable)
+    img0 = np.float32(img0)
+
+    # print(img0.shape)
+
+    # print(np.mean(img0))
+    result = render_deepdream(target_class, img0, iter_n, step)
+    # print(np.mean(result))
+    result = np.clip(result, 0, 1)
+
+    createResultLayer(timg, "deepdream", result*255.0)
+
+    # gimp.delete(img)
+
+register(
+        "python_fu_deepdream_legacy",
+        "Apply deepdream generative art to the specified layer",
+        "Apply deepdream generative art to the specified layer",
+        "Tufts LaserLemon",
+        "Tufts LaserLemon",
+        "2018",
+        "<Image>/Filters/Deepdream_Legacy...",
+        "RGB*, GRAY*",
+        [
+                (PF_INT, "iter_n", "Detail", 15),
+                (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
+                #(PF_INT, "octave_n", "Number of Octaves", 5),
+                #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
+                (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
+                (PF_OPTION, "feature", "Class:", 0, class_names)
+        ],
+        [],
+        python_deepdream_legacy)
+
+
 class gui(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        class_select = Treeview()
+        window = Tk()
+        window.title("Deep Dream Plugin")
+        window.geometry("250x480+32+32")
+
+        detail = StringVar(window)
+        detail.set("15")
+        Label(window, text="Detail", font=("Arial", 10)).place(x = 20, y = 20)
+        Spinbox(window, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+
+        strength = StringVar(window)
+        strength.set("1.5")
+        Label(window, text="Strength", font=("Arial", 10)).place(x = 20, y = 72)
+        Spinbox(window, from_=0.1, to=10, increment=0.1).place(x = 112, y = 72, width = 128, height = 32)
+
+        depth = StringVar(window)
+        depths = ["", "Shallow", "Medium", "Deep"]
+        depth.set(depths[1])
+        Label(window, text="Depth", font=("Arial", 10)).place(x = 20, y = 104)
+        OptionMenu(window, depth, *depths).place(x = 112, y = 104, width = 128, height = 32)
+
+        Label(window, text="Class Select", font=("Arial", 10)).place(x = 20, y = 152)
+        Label(window, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 174)
+
+        class_select = Treeview(window)
         i = 0
+
         for class_name in class_names:
             class_select.insert("", i, text=class_name)
             i += 1
-        class_select.pack()
+        
+        
+        class_select.place(x = 32, y = 206)
+
+
+        Button(window, text = "Cancel").place(x = 66, y = 450)
+        Button(window, text = "Run").place(x = 156, y = 450)
+
+        ## Pass variables to deepdream
+        ## Add progress bar
+        ## Add preview
 
 
 
-def python_deepdream(timg, tdrawable, iter_n, step, layer, feature):
+
+def python_deepdream(timg, tdrawable):
     # op = sess.graph.get_operations()
     # for m in op:
     #     print(m.values())
@@ -235,14 +325,15 @@ register(
         "<Image>/Filters/Deepdream...",
         "RGB*, GRAY*",
         [
-                (PF_INT, "iter_n", "Detail", 15),
-                (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
-                #(PF_INT, "octave_n", "Number of Octaves", 5),
-                #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
-                (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
-                (PF_OPTION, "feature", "Class:", 0, class_names)
+                # (PF_INT, "iter_n", "Detail", 15),
+                # (PF_SPINNER, "step", "Strength", 1.5, (-10, 10, 0.1)),
+                # #(PF_INT, "octave_n", "Number of Octaves", 5),
+                # #(PF_SLIDER, "octave_scale", "Octave Scale", 1.2, (1, 2, 0.01)),
+                # (PF_OPTION, "head", "Layer depth:", 0, ["Shallow", "Medium", "Deep"]),
+                # (PF_OPTION, "feature", "Class:", 0, class_names)
         ],
         [],
         python_deepdream)
+
 
 main()
