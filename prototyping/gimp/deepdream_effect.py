@@ -11,7 +11,8 @@ import os
 from io import BytesIO
 import numpy as np
 from functools import partial
-import PIL.Image
+import PIL.Image as Im
+import PIL.ImageTk as ImTk
 from IPython.display import clear_output, Image, display, HTML
 import sys
 
@@ -56,6 +57,9 @@ feature_nums = [int(graph.get_tensor_by_name(name+':0').get_shape()[-1]) for nam
 # print('Number of layers', len(layers))
 # print('Total number of feature channels:', sum(feature_nums))
 
+def update_preview_window(img):
+    if preview_window != None:
+        preview_window.update_preview(img)
 
 def showarray(a, fmt='jpeg'):
     a = np.uint8(np.clip(a, 0, 1)*255)
@@ -151,6 +155,8 @@ def render_deepdream(t_obj, img0=img_noise,
 
             g = calc_grad_tiled(img, t_grad)
             img += g*(step / (np.abs(g).mean()+1e-7))
+
+            update_preview_window(img)
             print('.',end = ' ')
         clear_output()
         #showarray(img/255.0)
@@ -182,6 +188,9 @@ def createResultLayer(image,name,result):
 
 
 def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
+
+    global preview_window 
+    preview_window = None
 
     width = tdrawable.width
     height = tdrawable.height
@@ -245,44 +254,46 @@ register(
 class gui(Tk):
     def __init__(self, timg, tdrawable, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        window = Tk()
-        window.title("Deep Dream Plugin")
-        window.geometry("250x480+32+32")
+        self.window = Tk()
+        self.window.title("Deep Dream Plugin")
+        self.window.geometry("600x480+32+32")
 
-        detail = StringVar(window)
-        detail.set("15")
-        Label(window, text="Detail", font=("Arial", 10)).place(x = 20, y = 20)
-        Spinbox(window, textvariable=detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+        self.detail = StringVar(self.window)
+        self.detail.set("15")
+        Label(self.window, text="Detail", font=("Arial", 10)).place(x = 20, y = 20)
+        Spinbox(self.window, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
 
-        strength = StringVar(window)
-        strength.set("1.5")
-        Label(window, text="Strength", font=("Arial", 10)).place(x = 20, y = 72)
-        Spinbox(window, textvariable=strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 72, width = 128, height = 32)
+        self.strength = StringVar(self.window)
+        self.strength.set("1.5")
+        Label(self.window, text="Strength", font=("Arial", 10)).place(x = 20, y = 72)
+        Spinbox(self.window, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 72, width = 128, height = 32)
 
-        depth = StringVar(window)
-        depths = ["", "Shallow", "Medium", "Deep"]
-        depth.set(depths[1])
-        Label(window, text="Depth", font=("Arial", 10)).place(x = 20, y = 104)
-        OptionMenu(window, depth, *depths).place(x = 112, y = 104, width = 128, height = 32)
+        self.depth = StringVar(self.window)
+        self.depths = ["", "Shallow", "Medium", "Deep"]
+        self.depth.set(self.depths[1])
+        Label(self.window, text="Depth", font=("Arial", 10)).place(x = 20, y = 104)
+        OptionMenu(self.window, self.depth, *self.depths).place(x = 112, y = 104, width = 128, height = 32)
 
-        Label(window, text="Class Select", font=("Arial", 10)).place(x = 20, y = 152)
-        Label(window, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 174)
+        Label(self.window, text="Class Select", font=("Arial", 10)).place(x = 20, y = 152)
+        Label(self.window, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 174)
 
-        class_select = Treeview(window)
+
+
+        self.class_select = Treeview(self.window)
         i = 0
 
         for class_name in class_names:
-            class_select.insert("", i, text=class_name)
+            self.class_select.insert("", i, text=class_name)
             i += 1
         
         
-        class_select.place(x = 32, y = 206)
+        self.class_select.place(x = 32, y = 206)
 
 
         def run():
-            iter_n = int(detail.get())
-            step = float(strength.get())
-            layer = depth.get()
+            iter_n = int(self.detail.get())
+            step = float(self.strength.get())
+            layer = self.depth.get()
             if layer == "Deep":
                 layer = 2
             elif layer == "Medium":
@@ -290,14 +301,27 @@ class gui(Tk):
             else:
                 layer = 0
 
-            features = class_select.selection()
+            features = self.class_select.selection()
             python_deepdream(timg, tdrawable, iter_n, step, layer, features)
 
-        Button(window, text = "Cancel", command = window.destroy).place(x = 66, y = 450)
-        Button(window, text = "Run", command=run).place(x = 156, y = 450)
+        Button(self.window, text = "Cancel", command = self.window.destroy).place(x = 66, y = 450)
+        Button(self.window, text = "Run", command=run).place(x = 156, y = 450)
+
+
+        self.preview_width = tdrawable.width
+        self.preview_height = tdrawable.height
+        self.preview = Canvas(self.window, width = self.preview_width, height=self.preview_height)
+        self.preview.place(x = 250, y = 20)
 
         ## Create class categories
         ## Add preview
+
+    def update_preview(self, img):
+        img = np.clip(img, 0, 255)
+        self.im=Im.frombytes('RGB', (img.shape[1],img.shape[0]), img.astype('b').tostring())
+        self.photo = ImTk.PhotoImage(master = self.window, image=self.im)
+        self.preview.create_image(0,0,image=self.photo,anchor=NW)
+        self.window.update()
 
 
 
@@ -308,7 +332,10 @@ def python_deepdream_gui(timg, tdrawable):
     #     print(m.values())
 
     top = gui(timg, tdrawable)
- 
+
+    global preview_window 
+    preview_window = top
+
     top.mainloop()
 
 
