@@ -258,32 +258,31 @@ register(
 class gui(Tk):
     def __init__(self, timg, tdrawable, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        self.window = Tk()
-        self.window.title("Deep Dream Plugin")
-        self.window.geometry("770x520+32+32")
+        self.title("Deep Dream Plugin")
+        self.geometry("770x520+32+32")
 
-        self.detail = StringVar(self.window)
+        self.detail = StringVar(self)
         self.detail.set("15")
-        Label(self.window, text="Detail", font=("Arial", 10)).place(x = 20, y = 25)
-        Spinbox(self.window, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+        Label(self, text="Detail", font=("Arial", 10)).place(x = 20, y = 25)
+        Spinbox(self, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
 
-        self.strength = StringVar(self.window)
+        self.strength = StringVar(self)
         self.strength.set("1.5")
-        Label(self.window, text="Strength", font=("Arial", 10)).place(x = 20, y = 65)
-        Spinbox(self.window, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 60, width = 128, height = 32)
+        Label(self, text="Strength", font=("Arial", 10)).place(x = 20, y = 65)
+        Spinbox(self, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 60, width = 128, height = 32)
 
-        self.depth = StringVar(self.window)
+        self.depth = StringVar(self)
         self.depths = ["", "Shallow", "Medium", "Deep"]
         self.depth.set(self.depths[1])
-        Label(self.window, text="Depth", font=("Arial", 10)).place(x = 20, y = 109)
-        OptionMenu(self.window, self.depth, *self.depths).place(x = 112, y = 104, width = 128, height = 32)
+        Label(self, text="Depth", font=("Arial", 10)).place(x = 20, y = 109)
+        OptionMenu(self, self.depth, *self.depths).place(x = 112, y = 104, width = 128, height = 32)
 
-        Label(self.window, text="Class Select", font=("Arial", 10)).place(x = 20, y = 152)
-        Label(self.window, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 174)
+        Label(self, text="Class Select", font=("Arial", 10)).place(x = 20, y = 152)
+        Label(self, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 174)
 
 
 
-        self.class_select = Treeview(self.window)
+        self.class_select = Treeview(self)
         i = 0
 
         for class_name in class_names:
@@ -308,8 +307,8 @@ class gui(Tk):
             features = self.class_select.selection()
             python_deepdream(timg, tdrawable, iter_n, step, layer, features)
 
-        Button(self.window, text = "Cancel", command = self.window.destroy).place(x = 66, y = 450)
-        Button(self.window, text = "Run", command=run).place(x = 156, y = 450)
+        Button(self, text = "Cancel", command = self.destroy).place(x = 66, y = 450)
+        Button(self, text = "Run", command=run).place(x = 156, y = 450)
 
         width = tdrawable.width
         height = tdrawable.height
@@ -323,7 +322,7 @@ class gui(Tk):
 
         self.preview_width = width
         self.preview_height = height
-        self.preview = Canvas(self.window, width = self.preview_width, height=self.preview_height)
+        self.preview = Canvas(self, width = self.preview_width, height=self.preview_height)
         self.preview.place(x = 250, y = 20)
 
         ## Create class categories
@@ -332,9 +331,9 @@ class gui(Tk):
     def update_preview(self, img):
         img = np.clip(img, 0, 255)
         self.im=Im.frombytes('RGB', (img.shape[1],img.shape[0]), img.astype('b').tostring()).resize((self.preview_width, self.preview_height))
-        self.photo = ImTk.PhotoImage(master = self.window, image=self.im)
+        self.photo = ImTk.PhotoImage(master = self, image=self.im)
         self.preview.create_image(0,0,image=self.photo,anchor=NW)
-        self.window.update()
+        self.update()
 
 
 
