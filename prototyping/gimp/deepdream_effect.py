@@ -205,7 +205,7 @@ def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
     result = render_deepdream(target_class, img0, iter_n, step)
     result = np.clip(result, 0, 1)
 
-    createResultLayer(timg, "deepdream", result*255.0)
+    createResultLayer(timg, tdrawable.name + " x " + class_names[feature], result*255.0)
 
 def python_deepdream(timg, tdrawable, iter_n, step, layer, features):
 
@@ -214,11 +214,15 @@ def python_deepdream(timg, tdrawable, iter_n, step, layer, features):
 
     layer ='softmax%i'%layer
 
-    target_class = T(layer)[:,int(features[0][1:], 16) - 1]
+
+    first_class = int(features[0][1:], 16) - 1
+    target_class = T(layer)[:,first_class]
+    layer_name = tdrawable.name + " x " + class_names[first_class]
 
     for feature in features[1:]:
         feature = int(feature[1:], 16) - 1
         target_class += T(layer)[:,feature]
+        layer_name += " x " + class_names[feature]
 
     print(target_class)
 
@@ -228,7 +232,7 @@ def python_deepdream(timg, tdrawable, iter_n, step, layer, features):
     result = render_deepdream(target_class, img0, iter_n, step)
     result = np.clip(result, 0, 1)
 
-    createResultLayer(timg, "deepdream", result*255.0)
+    createResultLayer(timg, layer_name, result*255.0)
 
 register(
         "python_fu_deepdream_legacy",
@@ -256,22 +260,22 @@ class gui(Tk):
         Tk.__init__(self, *args, **kwargs)
         self.window = Tk()
         self.window.title("Deep Dream Plugin")
-        self.window.geometry("600x480+32+32")
+        self.window.geometry("770x520+32+32")
 
         self.detail = StringVar(self.window)
         self.detail.set("15")
-        Label(self.window, text="Detail", font=("Arial", 10)).place(x = 20, y = 20)
+        Label(self.window, text="Detail", font=("Arial", 10)).place(x = 20, y = 25)
         Spinbox(self.window, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
 
         self.strength = StringVar(self.window)
         self.strength.set("1.5")
-        Label(self.window, text="Strength", font=("Arial", 10)).place(x = 20, y = 72)
-        Spinbox(self.window, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 72, width = 128, height = 32)
+        Label(self.window, text="Strength", font=("Arial", 10)).place(x = 20, y = 65)
+        Spinbox(self.window, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 60, width = 128, height = 32)
 
         self.depth = StringVar(self.window)
         self.depths = ["", "Shallow", "Medium", "Deep"]
         self.depth.set(self.depths[1])
-        Label(self.window, text="Depth", font=("Arial", 10)).place(x = 20, y = 104)
+        Label(self.window, text="Depth", font=("Arial", 10)).place(x = 20, y = 109)
         OptionMenu(self.window, self.depth, *self.depths).place(x = 112, y = 104, width = 128, height = 32)
 
         Label(self.window, text="Class Select", font=("Arial", 10)).place(x = 20, y = 152)
@@ -307,9 +311,18 @@ class gui(Tk):
         Button(self.window, text = "Cancel", command = self.window.destroy).place(x = 66, y = 450)
         Button(self.window, text = "Run", command=run).place(x = 156, y = 450)
 
+        width = tdrawable.width
+        height = tdrawable.height
 
-        self.preview_width = tdrawable.width
-        self.preview_height = tdrawable.height
+        if width > height:
+            height = height * 500 / width
+            width = 500
+        else:
+            width = width * 500 / height
+            height = 500
+
+        self.preview_width = width
+        self.preview_height = height
         self.preview = Canvas(self.window, width = self.preview_width, height=self.preview_height)
         self.preview.place(x = 250, y = 20)
 
@@ -318,7 +331,7 @@ class gui(Tk):
 
     def update_preview(self, img):
         img = np.clip(img, 0, 255)
-        self.im=Im.frombytes('RGB', (img.shape[1],img.shape[0]), img.astype('b').tostring())
+        self.im=Im.frombytes('RGB', (img.shape[1],img.shape[0]), img.astype('b').tostring()).resize((self.preview_width, self.preview_height))
         self.photo = ImTk.PhotoImage(master = self.window, image=self.im)
         self.preview.create_image(0,0,image=self.photo,anchor=NW)
         self.window.update()
