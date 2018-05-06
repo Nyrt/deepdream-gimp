@@ -34,6 +34,7 @@ from ttk import *
 # print(error)
 
 # Try doing this with different models? It might just *work*
+os.chdir(os.path.expanduser(".gimp-2.8/plug-ins"))
 model_fn = 'tensorflow_inception_graph.pb'
 
 config = tf.ConfigProto()
@@ -168,6 +169,9 @@ def render_deepdream(t_obj, img0=img_noise,
 print("loading class names")
 with open("imagenet_comp_graph_label_strings.txt") as textFile:
     class_names = [line[:-1] for line in textFile]
+class_indexes = {}
+for i in xrange(len(class_names)):
+    class_indexes[class_names[i]] = i
 
 # Returns NP array (N,bpp) (single vector ot triplets)
 def channelData(layer):
@@ -285,10 +289,29 @@ class gui(Tk):
         self.class_select = Treeview(self)
         i = 0
 
-        for class_name in class_names:
-            self.class_select.insert("", i, text=class_name)
-            i += 1
-        
+        try:
+            categories = open("./categories.txt").readlines()
+            parents = [""]*5
+            for line in categories:
+                depth = 0
+                i = len(class_names)
+                while line[0] == '#':
+                    line = line[1:]
+                    depth += 1
+                parents[depth] = line
+                val = i
+                if line in class_names:
+                    val = class_indexes[line]
+                else:
+                    i+=1
+                self.class_select.insert(parents[depth+1], val, text=line)
+                i += 1
+        except:
+            for class_name in class_names:
+                self.class_select.insert("", i, text=class_name)
+                i += 1
+
+
         
         self.class_select.place(x = 32, y = 206)
 
