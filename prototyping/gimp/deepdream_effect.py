@@ -94,12 +94,14 @@ resize = tffunc(np.float32, np.int32)(resize)
 
 
 
-def calc_grad_tiled(img, t_grad, tile_size=244):
+def calc_grad_tiled(img, t_grad, tile_size=244, seed=None):
     '''Compute the value of tensor t_grad over the image in a tiled way.
     Random shifts are applied to the image to blur tile boundaries over 
     multiple iterations.'''
     sz = tile_size
     h, w = img.shape[:2]
+    if seed != None:
+        np.random.seed(seed)
     sx, sy = np.random.randint(sz, size=2)
     img_shift = np.roll(np.roll(img, sx, 1), sy, 0)
     grad = np.zeros_like(img)
@@ -126,8 +128,7 @@ def calc_grad_tiled(img, t_grad, tile_size=244):
 
 img_noise = np.random.uniform(size=(224,224,3)) + 100.0
 def render_deepdream(t_obj, img0=img_noise,
-                     iter_n=15, step=1.5, octave_n=10, octave_scale=1.2):
-    
+                     iter_n=15, step=1.5, octave_n=10, octave_scale=1.2, seed=None):
 
 
     t_score = tf.reduce_mean(t_obj) # defining the optimization objective
@@ -155,7 +156,12 @@ def render_deepdream(t_obj, img0=img_noise,
         for i in range(iter_n):
             pdb.gimp_progress_update(float(i + octave * iter_n )/float(iter_n * octave_n))
 
-            g = calc_grad_tiled(img, t_grad)
+            # Perturb the seed in a predictable way so it's not the same every time
+            if seed != None: 
+                seed *= 7
+                seed %= 4294967295
+
+            g = calc_grad_tiled(img, t_grad, seed=seed)
             img += g*(step / (np.abs(g).mean()+1e-7))
 
             update_preview_window(img)
@@ -212,7 +218,7 @@ def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
 
     createResultLayer(timg, tdrawable.name + " x " + class_names[feature], result*255.0)
 
-def python_deepdream(timg, tdrawable, iter_n, step, layers, features):
+def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed):
 
     width = tdrawable.width
     height = tdrawable.height
@@ -238,7 +244,7 @@ def python_deepdream(timg, tdrawable, iter_n, step, layers, features):
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
 
-    result = render_deepdream(target_class, img0, iter_n, step)
+    result = render_deepdream(target_class, img0, iter_n, step, seed=seed)
     result = np.clip(result, 0, 1)
 
     createResultLayer(timg, layer_name, result*255.0)
@@ -270,33 +276,41 @@ class gui(Tk):
         self.title("Deep Dream Plugin")
         self.geometry("770x540+32+32")
 
+        #tab menu
+        nb = Notebook(self)
+        basic = Frame(nb)
+        advanced = Frame(nb)
+
+        ## Basic options
+        # Detail
         self.detail = StringVar(self)
         self.detail.set("15")
-        Label(self, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
-        Spinbox(self, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+        Label(basic, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
+        Spinbox(basic, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
 
+        # Strength
         self.strength = StringVar(self)
         self.strength.set("1.5")
-        Label(self, text="Strength:", font=("Arial", 10)).place(x = 20, y = 65)
-        Spinbox(self, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 60, width = 128, height = 32)
+        Label(basic, text="Strength:", font=("Arial", 10)).place(x = 20, y = 65)
+        Spinbox(basic, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 60, width = 128, height = 32)
 
+        # Depth
         self.shallow = IntVar()
         self.shallow.set(1)
         self.medium = IntVar()
         self.medium.set(0)
         self.deep = IntVar()
         self.deep.set(0)
-        Label(self, text="Depth:").place(x=20, y=109)
-        Checkbutton(self, var=self.shallow, text="Shallow").place(x = 112, y = 104, width = 128, height = 32)
-        Checkbutton(self, var=self.medium, text="Medium").place(x = 112, y = 136, width = 128, height = 32)
-        Checkbutton(self, var=self.deep, text="Deep").place(x = 112, y = 168, width = 128, height = 32)
+        Label(basic, text="Depth:").place(x=20, y=109)
+        Checkbutton(basic, var=self.shallow, text="Shallow").place(x = 112, y = 104, width = 128, height = 32)
+        Checkbutton(basic, var=self.medium, text="Medium").place(x = 112, y = 136, width = 128, height = 32)
+        Checkbutton(basic, var=self.deep, text="Deep").place(x = 112, y = 168, width = 128, height = 32)
 
-        Label(self, text="Class Select", font=("Arial", 10)).place(x = 20, y = 212)
-        Label(self, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 234)
+        Label(basic, text="Class Select", font=("Arial", 10)).place(x = 20, y = 212)
+        Label(basic, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 234)
 
-
-
-        self.class_select = Treeview(self)
+        # Class select
+        self.class_select = Treeview(basic)
         i = 0
 
         try:
@@ -322,10 +336,20 @@ class gui(Tk):
                 i += 1
 
         self.class_select.place(x = 32, y = 266, width = 212, height=230)
-        self.scroll = Scrollbar(self, orient="vertical", command=self.class_select.yview)
+        self.scroll = Scrollbar(basic, orient="vertical", command=self.class_select.yview)
         self.scroll.place(x=232,y=266, height=230)
         self.class_select.configure(yscrollcommand=self.scroll.set)
 
+        ## Advanced options
+
+        Label(advanced, text="Random seed:", font=("Arial", 10)).place(x = 20, y = 25)
+        self.seed =Text(advanced)
+        self.seed.place(x = 112, y = 20, width = 128, height = 32)
+
+
+        ## Global stuff
+
+        # Run and cancel buttons
         def run():
             iter_n = int(self.detail.get())
             step = float(self.strength.get())
@@ -333,17 +357,30 @@ class gui(Tk):
             layers[0] = self.shallow.get()
             layers[1] = self.medium.get()
             layers[2] = self.deep.get()
-            print(layers)
 
+
+
+            seed = self.seed.get("1.0",END)
+
+            if seed == "\n":
+                seed = None
+            else:
+                seed = hash(seed)%4294967295
+
+            print(seed)
             features = self.class_select.selection()
-            python_deepdream(timg, tdrawable, iter_n, step, layers, features)
+            python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed)
 
-        Button(self, text = "Cancel", command = self.destroy).place(x = 66, y = 510)
-        Button(self, text = "Run", command=run).place(x = 156, y = 510)
+        Button(self, text = "Cancel", command = self.destroy).place(x = 585, y = 510)
+        Button(self, text = "Run", command=run).place(x = 675, y = 510)
 
         width = tdrawable.width
         height = tdrawable.height
 
+
+
+
+        # Preview
         if width > height:
             height = height * 500 / width
             width = 500
@@ -356,8 +393,11 @@ class gui(Tk):
         self.preview = Canvas(self, width = self.preview_width, height=self.preview_height)
         self.preview.place(x = 250, y = 20)
 
-        ## Create class categories
-        ## Add preview
+        # Tab menu (part 2)
+        nb.add(basic, text = 'Basic')
+        nb.add(advanced, text = 'Advanced')
+        nb.pack(expand=1, fill="both")
+
 
     def update_preview(self, img):
         img = np.clip(img, 0, 255)
