@@ -176,6 +176,7 @@ def render_deepdream(t_obj, img0=img_noise,
 print("loading class names")
 with open("imagenet_comp_graph_label_strings.txt") as textFile:
     class_names = [line[:-1] for line in textFile]
+
 class_indexes = {}
 for i in xrange(len(class_names)):
     class_indexes[class_names[i]] = i
@@ -232,12 +233,14 @@ def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octa
 
             for feature in features:
                 feature = int(feature[1:], 16) - 1
-                if target_class == None:
-                    target_class = T(layer)[:,feature]
-                    layer_name = tdrawable.name + " x " +  class_names[feature]
-                else:
-                    target_class += T(layer)[:,feature]
-                    layer_name += " x " + class_names[feature]
+                print(feature)
+                if feature <= len(class_names):
+                    if target_class == None:
+                        target_class = T(layer)[:,feature]
+                        layer_name = tdrawable.name + " x " +  class_names[feature]
+                    else:
+                        target_class += T(layer)[:,feature]
+                        layer_name += " x " + class_names[feature]
 
     print(target_class)
 
@@ -289,6 +292,7 @@ class gui(Tk):
         self.detail.set("15")
         detail_label = Label(basic, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
         detail_box = Spinbox(basic, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+        # tip.bind(detail_label, "The number of iterations per octave")
 
         # Strength
         self.strength = StringVar(self)
@@ -313,29 +317,30 @@ class gui(Tk):
 
         # Class select
         self.class_select = Treeview(basic)
-        i = 0
+        i = len(class_names)
 
-        try:
-            categories = open("./categories.txt").readlines()
-            parents = [""]*5
-            for line in categories:
+
+        categories = open("./categories.txt").readlines()
+        parents = [""]*5
+        class_set = set(class_names)
+        for line in categories:
+            if len(line) > 0:
                 depth = 0
-                i = len(class_names)
+                line = line[:-2]
                 while line[0] == '#':
                     line = line[1:]
                     depth += 1
-                parents[depth] = line
+                
+
                 val = i
                 if line in class_names:
                     val = class_indexes[line]
                 else:
+                    print(repr(line))
                     i+=1
-                self.class_select.insert(parents[depth+1], val, text=line)
-                i += 1
-        except:
-            for class_name in class_names:
-                self.class_select.insert("", i, text=class_name)
-                i += 1
+                tree_obj = self.class_select.insert(parents[depth+1], val, text=line)
+                parents[depth] = tree_obj
+
 
         self.class_select.place(x = 32, y = 266, width = 212, height=230)
         self.scroll = Scrollbar(basic, orient="vertical", command=self.class_select.yview)
@@ -381,8 +386,8 @@ class gui(Tk):
             else:
                 seed = hash(seed)%4294967295
 
-            print(seed)
             features = self.class_select.selection()
+            print(features)
             python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octave_n = int(self.octave_n.get()), octave_scale = float(self.octave_scale.get()))
 
         Button(self, text = "Cancel", command = self.destroy).place(x = 585, y = 510)

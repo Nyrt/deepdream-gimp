@@ -327,7 +327,7 @@ custard apple
 pomegranate
 acorn
 hip
-ear
+ear of corn
 rapeseed
 corn
 buckeye
@@ -913,7 +913,7 @@ gown
 window screen
 agaric
 cellular telephone
-nipple
+rubber nipple
 barbell
 mailbox
 lab coat
@@ -998,4 +998,4 @@ coffee mug
 rubber eraser
 stole
 carbonara
-dumbbell
+dumbbell 
