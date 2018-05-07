@@ -319,6 +319,26 @@ class gui(Tk):
         self.class_select = Treeview(basic)
         i = len(class_names)
 
+        # #search box
+
+        # self.search_box = Entry(basic)
+        # self.search_button = Button(basic, text="Search")
+        # def search(item=''):
+        #     children = self.class_select.get_children(item)
+        #     for child in children:
+        #         text = self.class_select.item(child, 'text')
+        #         if text.startswith(self.search_box.get()):
+        #             self.class_select.selection_set(child)
+        #             return True
+        #         else:
+        #             res = search(child)
+        #             if res:
+        #                 return True
+
+        # self.search_button.configure(command=search)
+        # self.search_box.place(x = 20, y = 266)
+        # self.search_button.place(x = 200, y = 266)
+
 
         categories = open("./categories.txt").readlines()
         parents = [""]*5
@@ -336,7 +356,7 @@ class gui(Tk):
                 if line in class_names:
                     val = class_indexes[line]
                 else:
-                    print(repr(line))
+                    # print(repr(line))
                     i+=1
                 tree_obj = self.class_select.insert(parents[depth+1], val, text=line)
                 parents[depth] = tree_obj
