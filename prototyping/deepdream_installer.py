@@ -8,7 +8,7 @@ if os.getuid() != 0:
     print(textwrap.fill(admin_msg, 80))
     exit()
 else:
-    install_msg = "This installer will copy three files to your GIMP plug-ins folder. Do you wish to continue [Y/n]? "
+    install_msg = "This installer will copy three files to your GIMP plug-ins folder. Do you wish to continue [Y/n]?  "
     user_response = raw_input(textwrap.fill(install_msg, 80))
     if user_response.lower() not in ["yes", "y"]:
         print("Installation cancelled.")
@@ -16,7 +16,7 @@ else:
 
 
 opsys = sys.platform
-print(opsys)
+print("Operating system: " + opsys)
 
 dir1 = ""
 dir2 = ""
@@ -46,13 +46,11 @@ else:
     if os.path.isdir(dir2):
         dirDest = dir2
 
-print(dirDest)
-
 dirSrc = os.getcwd() + "/gimp"
-print(dirSrc)
+print("Copying files from: " + dirSrc)
+
+print("Copying files to: " + dirDest)
 
 files = os.listdir(dirSrc)
 for f in files:
-    print(f[-4:])
-    if f[-4:] == ".txt":
-        copyfile(dirSrc + "/" + f, dirDest + f)
+    copyfile(dirSrc + "/" + f, dirDest + f)
