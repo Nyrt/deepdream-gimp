@@ -218,7 +218,7 @@ def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
 
     createResultLayer(timg, tdrawable.name + " x " + class_names[feature], result*255.0)
 
-def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed):
+def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octave_n = 10, octave_scale = 1.2):
 
     width = tdrawable.width
     height = tdrawable.height
@@ -244,7 +244,9 @@ def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed):
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
 
-    result = render_deepdream(target_class, img0, iter_n, step, seed=seed)
+    result = render_deepdream(target_class, img0, iter_n, step, octave_n = octave_n, octave_scale=octave_scale, seed=seed)
+    pdb.gimp_progress_update(1.0)
+
     result = np.clip(result, 0, 1)
 
     createResultLayer(timg, layer_name, result*255.0)
@@ -285,8 +287,9 @@ class gui(Tk):
         # Detail
         self.detail = StringVar(self)
         self.detail.set("15")
-        Label(basic, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
-        Spinbox(basic, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+        detail_label = Label(basic, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
+        detail_box = Spinbox(basic, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+        tip.bind(detail_label, "The number of iterations per octave")
 
         # Strength
         self.strength = StringVar(self)
@@ -342,9 +345,21 @@ class gui(Tk):
 
         ## Advanced options
 
-        Label(advanced, text="Random seed:", font=("Arial", 10)).place(x = 20, y = 25)
+        self.octave_n = StringVar(self)
+        self.octave_n.set("10")
+        Label(advanced, text="Octaves:", font=("Arial", 10)).place(x = 20, y = 25)
+        Spinbox(advanced, textvariable=self.octave_n, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
+
+        self.octave_scale = StringVar(self)
+        self.octave_scale.set("1.2")
+        Label(advanced, text="Octave Scale:", font=("Arial", 10)).place(x = 20, y = 65)
+        Spinbox(advanced, textvariable=self.octave_scale, from_=1.0, to=2.0, increment=0.1).place(x = 112, y = 60, width = 128, height = 32)
+
+
+        Label(advanced, text="Random seed:", font=("Arial", 10)).place(x = 20, y = 105)
         self.seed =Text(advanced)
-        self.seed.place(x = 112, y = 20, width = 128, height = 32)
+        self.seed.place(x = 112, y = 100, width = 128, height = 32)
+
 
 
         ## Global stuff
@@ -369,7 +384,7 @@ class gui(Tk):
 
             print(seed)
             features = self.class_select.selection()
-            python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed)
+            python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octave_n = int(self.octave_n.get()), octave_scale = float(self.octave_scale.get()))
 
         Button(self, text = "Cancel", command = self.destroy).place(x = 585, y = 510)
         Button(self, text = "Run", command=run).place(x = 675, y = 510)
