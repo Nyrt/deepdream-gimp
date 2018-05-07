@@ -1,6 +1,7 @@
 import sys
 import os
 import textwrap
+import stat
 from shutil import copyfile
 
 if os.getuid() != 0:
@@ -16,7 +17,7 @@ else:
 
 
 opsys = sys.platform
-print("Operating system: " + opsys)
+print("\tOperating system: " + opsys)
 
 dir1 = ""
 dir2 = ""
@@ -47,10 +48,17 @@ else:
         dirDest = dir2
 
 dirSrc = os.getcwd() + "/gimp"
-print("Copying files from: " + dirSrc)
 
-print("Copying files to: " + dirDest)
+print("\tCopying files from: " + dirSrc)
+
+print("\tCopying files to: " + dirDest)
 
 files = os.listdir(dirSrc)
 for f in files:
     copyfile(dirSrc + "/" + f, dirDest + f)
+
+effect_file = dirDest + "/deepdream_effect.py"
+st = os.stat(effect_file)
+os.chmod(effect_file, st.st_mode | stat.S_IEXEC | stat.S_IXOTH)
+
+print("Installation complete!")
