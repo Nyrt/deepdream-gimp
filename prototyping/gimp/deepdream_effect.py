@@ -34,6 +34,8 @@ from ttk import *
 # print(error)
 
 # Try doing this with different models? It might just *work*
+os.chdir(os.path.expanduser("~"))
+os.chdir(os.path.expanduser(".gimp-2.8/plug-ins"))
 model_fn = 'tensorflow_inception_graph.pb'
 
 config = tf.ConfigProto()
@@ -168,6 +170,9 @@ def render_deepdream(t_obj, img0=img_noise,
 print("loading class names")
 with open("imagenet_comp_graph_label_strings.txt") as textFile:
     class_names = [line[:-1] for line in textFile]
+class_indexes = {}
+for i in xrange(len(class_names)):
+    class_indexes[class_names[i]] = i
 
 # Returns NP array (N,bpp) (single vector ot triplets)
 def channelData(layer):
@@ -207,22 +212,26 @@ def python_deepdream_legacy(timg, tdrawable, iter_n, step, layer, feature):
 
     createResultLayer(timg, tdrawable.name + " x " + class_names[feature], result*255.0)
 
-def python_deepdream(timg, tdrawable, iter_n, step, layer, features):
+def python_deepdream(timg, tdrawable, iter_n, step, layers, features):
 
     width = tdrawable.width
     height = tdrawable.height
 
-    layer ='softmax%i'%layer
+    target_class = None
 
+    for layer in xrange(len(layers)):
+        if layers[layer] == 1:
+            print(layer)
+            layer ='softmax%i'%layer
 
-    first_class = int(features[0][1:], 16) - 1
-    target_class = T(layer)[:,first_class]
-    layer_name = tdrawable.name + " x " + class_names[first_class]
-
-    for feature in features[1:]:
-        feature = int(feature[1:], 16) - 1
-        target_class += T(layer)[:,feature]
-        layer_name += " x " + class_names[feature]
+            for feature in features:
+                feature = int(feature[1:], 16) - 1
+                if target_class == None:
+                    target_class = T(layer)[:,feature]
+                    layer_name = tdrawable.name + " x " +  class_names[feature]
+                else:
+                    target_class += T(layer)[:,feature]
+                    layer_name += " x " + class_names[feature]
 
     print(target_class)
 
@@ -259,56 +268,78 @@ class gui(Tk):
     def __init__(self, timg, tdrawable, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
         self.title("Deep Dream Plugin")
-        self.geometry("770x520+32+32")
+        self.geometry("770x540+32+32")
 
         self.detail = StringVar(self)
         self.detail.set("15")
-        Label(self, text="Detail", font=("Arial", 10)).place(x = 20, y = 25)
+        Label(self, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
         Spinbox(self, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
 
         self.strength = StringVar(self)
         self.strength.set("1.5")
-        Label(self, text="Strength", font=("Arial", 10)).place(x = 20, y = 65)
+        Label(self, text="Strength:", font=("Arial", 10)).place(x = 20, y = 65)
         Spinbox(self, textvariable=self.strength, from_=0.1, to=10, increment=0.1).place(x = 112, y = 60, width = 128, height = 32)
 
-        self.depth = StringVar(self)
-        self.depths = ["", "Shallow", "Medium", "Deep"]
-        self.depth.set(self.depths[1])
-        Label(self, text="Depth", font=("Arial", 10)).place(x = 20, y = 109)
-        OptionMenu(self, self.depth, *self.depths).place(x = 112, y = 104, width = 128, height = 32)
+        self.shallow = IntVar()
+        self.shallow.set(1)
+        self.medium = IntVar()
+        self.medium.set(0)
+        self.deep = IntVar()
+        self.deep.set(0)
+        Label(self, text="Depth:").place(x=20, y=109)
+        Checkbutton(self, var=self.shallow, text="Shallow").place(x = 112, y = 104, width = 128, height = 32)
+        Checkbutton(self, var=self.medium, text="Medium").place(x = 112, y = 136, width = 128, height = 32)
+        Checkbutton(self, var=self.deep, text="Deep").place(x = 112, y = 168, width = 128, height = 32)
 
-        Label(self, text="Class Select", font=("Arial", 10)).place(x = 20, y = 152)
-        Label(self, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 174)
+        Label(self, text="Class Select", font=("Arial", 10)).place(x = 20, y = 212)
+        Label(self, text="Hold 'ctrl' or 'shift' to select multiple", font=("Arial", 10, "italic")).place(x = 20, y = 234)
 
 
 
         self.class_select = Treeview(self)
         i = 0
 
-        for class_name in class_names:
-            self.class_select.insert("", i, text=class_name)
-            i += 1
-        
-        
-        self.class_select.place(x = 32, y = 206)
+        try:
+            categories = open("./categories.txt").readlines()
+            parents = [""]*5
+            for line in categories:
+                depth = 0
+                i = len(class_names)
+                while line[0] == '#':
+                    line = line[1:]
+                    depth += 1
+                parents[depth] = line
+                val = i
+                if line in class_names:
+                    val = class_indexes[line]
+                else:
+                    i+=1
+                self.class_select.insert(parents[depth+1], val, text=line)
+                i += 1
+        except:
+            for class_name in class_names:
+                self.class_select.insert("", i, text=class_name)
+                i += 1
 
+        self.class_select.place(x = 32, y = 266, width = 212, height=230)
+        self.scroll = Scrollbar(self, orient="vertical", command=self.class_select.yview)
+        self.scroll.place(x=232,y=266, height=230)
+        self.class_select.configure(yscrollcommand=self.scroll.set)
 
         def run():
             iter_n = int(self.detail.get())
             step = float(self.strength.get())
-            layer = self.depth.get()
-            if layer == "Deep":
-                layer = 2
-            elif layer == "Medium":
-                layer = 1
-            else:
-                layer = 0
+            layers = [0,0,0]
+            layers[0] = self.shallow.get()
+            layers[1] = self.medium.get()
+            layers[2] = self.deep.get()
+            print(layers)
 
             features = self.class_select.selection()
-            python_deepdream(timg, tdrawable, iter_n, step, layer, features)
+            python_deepdream(timg, tdrawable, iter_n, step, layers, features)
 
-        Button(self, text = "Cancel", command = self.destroy).place(x = 66, y = 450)
-        Button(self, text = "Run", command=run).place(x = 156, y = 450)
+        Button(self, text = "Cancel", command = self.destroy).place(x = 66, y = 510)
+        Button(self, text = "Run", command=run).place(x = 156, y = 510)
 
         width = tdrawable.width
         height = tdrawable.height
