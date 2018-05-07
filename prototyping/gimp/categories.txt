@@ -1,5 +1,4 @@
 dummy
-bubble
 #Dogs
 English setter
 Siberian husky
@@ -496,7 +495,6 @@ guillotine
 parking meter
 projector
 loupe
-crane
 cash machine
 harvester
 thresher
@@ -533,7 +531,6 @@ notebook
 binder
 beaker
 #Computer equipment
-monitor
 laptop
 computer keyboard
 desktop computer
@@ -601,7 +598,6 @@ hamper
 rubber eraser
 hair slide
 pitcher
-television
 piggy bank
 dial telephone
 soap dispenser
@@ -648,6 +644,7 @@ switch
 menu
 packet
 #Recreation
+bubble
 pinwheel
 joystick
 balance beam
@@ -674,8 +671,6 @@ horizontal bar
 dumbbell
 barbell
 parachute
-television
-radio
 ballplayer
 water bottle
 jigsaw puzzle
@@ -684,7 +679,6 @@ comic book
 slot
 ping-pong ball
 punching bag
-reflex camera
 sleeping bag
 racket
 reel
@@ -944,7 +938,6 @@ swimming trunks
 bonnet
 wool
 velvet
-maillot
 groom
 #Accessories
 sunglass
@@ -954,21 +947,12 @@ necklace
 mailbag
 mask
 CD player
-water bottle
 perfume
 backpack
 purse
-bow tie
-bolo tie
-stole
-Windsor tie
 cellular telephone
 wallet
 cassette player
-tape player
-iPod
-lens cap
-reflex camera
 wig
 lipstick
 umbrella

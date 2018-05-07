@@ -228,11 +228,14 @@ def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octa
 
     for layer in xrange(len(layers)):
         if layers[layer] == 1:
-            print(layer)
+            # print(layer)
             layer ='softmax%i'%layer
 
             for feature in features:
-                feature = int(feature[1:], 16) - 1
+                if feature == 'I001':
+                    feature = 0
+                else:
+                    feature = int(feature) - 1
                 print(feature)
                 if feature <= len(class_names):
                     if target_class == None:
@@ -358,7 +361,8 @@ class gui(Tk):
                 else:
                     # print(repr(line))
                     i+=1
-                tree_obj = self.class_select.insert(parents[depth+1], val, text=line)
+                # print(val)
+                tree_obj = self.class_select.insert(parents[depth+1], END, iid=val, text=line)
                 parents[depth] = tree_obj
 
 
