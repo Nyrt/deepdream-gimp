@@ -1,0 +1,832 @@
+#DOGS
+English setter
+Siberian husky
+Australian terrier
+English springer
+Great Dane
+malamute
+Walker hound
+Welsh springer spaniel
+whippet
+Scottish deerhound
+Weimaraner
+soft-coated wheaten terrier
+Dandie Dinmont
+Old English sheepdog
+otterhound
+bloodhound
+Airedale
+giant schnauzer
+dalmatian
+black-and-tan coonhound
+papillon
+Staffordshire bullterrier
+Mexican hairless
+Bouvier des Flandres
+miniature poodle
+malinois
+Lhasa
+Yorkshire terrier
+Newfoundland
+Norwegian elkhound
+Rottweiler
+schipperke
+Pekinese
+Brabancon griffon
+West Highland white terrier
+Sealyham terrier
+Saluki
+Irish wolfhound
+EntleBucher
+French bulldog
+basenji
+Bernese mountain dog
+Maltese dog
+Norfolk terrier
+toy terrier
+vizsla
+cairn
+groenendael
+Cardigan
+clumber
+komondor
+Afghan hound
+Japanese spaniel
+borzoi
+toy poodle
+Kerry blue terrier
+Scotch terrier
+Tibetan mastiff
+Doberman
+Boston bull
+Greater Swiss Mountain dog
+Appenzeller
+Shih-Tzu
+Irish water spaniel
+Pomeranian
+Bedlington terrier
+miniature schnauzer
+collie
+golden retriever
+Irish terrier
+affenpinscher
+Border collie
+boxer
+silky terrier
+beagle
+Leonberg
+German short-haired pointer
+Chesapeake Bay retriever
+bull mastiff
+pug
+kuvasz
+curly-coated retriever
+Norwich terrier
+flat-coated retriever
+keeshond
+Eskimo dog
+Brittany spaniel
+standard poodle
+Lakeland terrier
+Gordon setter
+standard schnauzer
+Tibetan terrier
+wire-haired fox terrier
+basset
+chow
+American Staffordshire terrier
+Shetland sheepdog
+Great Pyrenees
+Chihuahua
+Labrador retriever
+Saint Bernard
+Samoyed
+bluetick
+redbone
+kelpie
+miniature pinscher
+Italian greyhound
+cocker spaniel
+Irish setter
+Sussex spaniel
+Pembroke
+Blenheim spaniel
+Rhodesian ridgeback
+African hunting dog
+Ibizan hound
+English foxhound
+briard
+Border terrier
+German shepherd
+schooner
+#PRIMATES
+guenon
+indri
+orangutan
+squirrel monkey
+chimpanzee
+proboscis monkey
+gorilla
+spider monkey
+siamang
+patas
+dhole
+baboon
+macaque
+capuchin
+howler monkey
+marmoset
+gibbon
+langur
+colobus
+#SEA CREATURES
+grey whale
+sea lion
+killer whale
+dugong
+starfish
+chambered nautilus
+great white shark
+tiger shark
+hammerhead
+electric ray
+stingray
+barracouta
+coho
+tench
+goldfish
+eel
+rock beauty
+anemone fish
+lionfish
+puffer
+sturgeon
+gar
+loggerhead
+axolotl
+trilobite
+isopod
+Dungeness crab
+rock crab
+fiddler crab
+king crab
+American lobster
+spiny lobster
+crayfish
+hermit crab
+jellyfish
+sea anemone
+brain coral
+flatworm
+nematode
+conch
+snail
+slug
+sea slug
+chiton
+sea urchin
+sea cucumber
+#LAND FORMATIONS
+cliff
+valley
+alp
+volcano
+promontory
+sandbar
+coral reef
+lakeside
+seashore
+geyser
+#TOOLS & APPLIANCES
+hatchet
+cleaver
+letter opener
+plane
+power drill
+lawn mower
+hammer
+corkscrew
+can opener
+plunger
+screwdriver
+shovel
+plow
+chain saw
+whistle
+wing
+paintbrush
+hand blower
+carpenter's kit
+oxygen mask
+snorkel
+loudspeaker
+microphone
+screen
+mouse
+electric fan
+oil filter
+strainer
+space heater
+stove
+guillotine
+barometer
+rule
+odometer
+scale
+analog clock
+digital clock
+wall clock
+hourglass
+sundial
+parking meter
+stopwatch
+digital watch
+stethoscope
+syringe
+magnetic compass
+binoculars
+projector
+sunglasses
+loupe
+radio telescope
+bow
+cannon [ground]
+assault rifle
+rifle
+projectile
+computer keyboard
+typewriter keyboard
+crane
+lighter
+abacus
+cash machine
+slide rule
+desktop computer
+hand-held computer
+notebook
+web site
+harvester
+thresher
+printer
+iron
+espresso maker
+microwave
+Dutch oven
+rotisserie
+toaster
+waffle iron
+vacuum
+dishwasher
+refrigerator
+washer
+Crock Pot
+frying pan
+wok
+caldron
+coffeepot
+teapot
+spatula
+nail
+screw
+television
+radio
+oscilloscope
+monitor
+laptop
+#MUSICAL INSTRUMENTS
+accordion
+grand piano
+organ
+upright
+chime
+drum
+gong
+maraca
+marimba
+steel drum
+banjo
+cello
+violin
+harp
+acoustic guitar
+electric guitar
+cornet
+French horn
+trombone
+harmonica
+ocarina
+panpipe
+bassoon
+oboe
+sax
+flute
+drumstick
+#VEHICLES
+minibus
+airliner
+warplane
+airship
+balloon
+space shuttle
+fireboat
+gondola
+speedboat
+lifeboat
+canoe
+yawl
+catamaran
+trimaran
+container ship
+liner
+pirate
+aircraft carrier
+submarine
+half track
+tank
+bobsled
+dogsled
+bicycle-built-for-two
+mountain bike
+freight car
+passenger car
+barrow
+shopping cart
+motor scooter
+forklift
+electric locomotive
+steam locomotive
+amphibian
+ambulance
+beach wagon
+cab
+convertible
+jeep
+limousine
+minivan
+Model T
+racer
+sports car
+go-kart
+golfcart
+moped
+snowplow
+fire engine
+garbage truck
+pickup
+tow truck
+trailer truck
+moving van
+police van
+recreational vehicle
+streetcar
+snowmobile
+tractor
+mobile home
+tricycle
+unicycle
+horse cart
+jinrikisha
+oxcart
+school bus
+bullet train
+trolleybus
+#FURNITURE
+bassinet
+cradle
+crib
+four-poster
+bookcase
+china cabinet
+medicine chest
+chiffonier
+table lamp
+file
+park bench
+barber chair
+throne
+folding chair
+rocking chair
+studio couch
+toilet seat
+desk
+pool table
+dining table
+entertainment center
+wardrobe
+chest
+#BIRDS
+cock
+hen
+ostrich
+brambling
+goldfinch
+house finch
+junco
+indigo bunting
+robin
+bulbul
+jay
+magpie
+chickadee
+water ouzel
+kite
+bald eagle
+vulture
+great grey owl
+black grouse
+ptarmigan
+ruffed grouse
+prairie chicken
+peacock
+quail
+partridge
+African grey
+macaw
+sulphur-crested cockatoo
+lorikeet
+coucal
+bee eater
+hornbill
+hummingbird
+jacamar
+toucan
+drake
+red-breasted merganser
+goose
+black swan
+white stork
+black stork
+spoonbill
+flamingo
+American egret
+little blue heron
+bittern
+crane
+limpkin
+American coot
+bustard
+ruddy turnstone
+red-backed sandpiper
+redshank
+dowitcher
+oystercatcher
+European gallinule
+pelican
+king penguin
+albatross
+#REPTILES
+leatherback turtle
+mud turtle
+terrapin
+box turtle
+banded gecko
+common iguana
+American chameleon
+whiptail
+agama
+frilled lizard
+alligator lizard
+Gila monster
+green lizard
+African chameleon
+Komodo dragon
+triceratops
+African crocodile
+American alligator
+thunder snake
+ringneck snake
+hognose snake
+green snake
+king snake
+garter snake
+water snake
+vine snake
+night snake
+boa constrictor
+rock python
+Indian cobra
+green mamba
+sea snake
+horned viper
+diamondback
+sidewinder
+European fire salamander
+common newt
+eft
+spotted salamander
+#BUGS
+ant
+harvestman
+scorpion
+black and gold garden spider
+barn spider
+garden spider
+black widow
+tarantula
+wolf spider
+tick
+centipede
+tiger beetle
+ladybug
+ground beetle
+long-horned beetle
+leaf beetle
+dung beetle
+rhinoceros beetle
+weevil
+fly
+bee
+grasshopper
+cricket
+walking stick
+cockroach
+mantis
+cicada
+leafhopper
+lacewing
+dragonfly
+damselfly
+admiral
+ringlet
+monarch
+cabbage butterfly
+sulphur butterfly
+lycaenid
+#BUILDINGS & STRUCTURES
+altar
+triumphal arch
+patio
+steel arch bridge
+suspension bridge
+viaduct
+barn
+greenhouse
+palace
+monastery
+library
+apiary
+boathouse
+church
+mosque
+stupa
+planetarium
+restaurant
+cinema
+home theater
+lumbermill
+coil
+obelisk
+beacon
+totem pole
+castle
+prison
+grocery store
+bakery
+barbershop
+bookshop
+butcher shop
+confectionery
+shoe shop
+tobacco shop
+toyshop
+fountain
+cliff dwelling
+yurt
+dock
+brass
+megalith
+bannister
+breakwater
+dam
+chainlink fence
+picket fence
+worm fence
+stone wall
+grille
+sliding door
+turnstile
+mountain tent
+water tower
+drilling platform
+bell cote
+flagpole
+dome
+#CLOTHES
+kimono
+suit
+feather boa
+cloak
+hoopskirt
+trench coat
+bulletproof vest
+cardigan
+sweatshirt
+apron
+poncho
+military uniform
+mitten
+brassiere
+miniskirt
+cowboy hat
+cowboy boot
+lab coat
+gown
+sombrero
+overskirt
+sarong
+jersey
+Loafer
+maillot
+bikini
+sock
+stole
+vestment
+jean
+sandal
+fur coat
+pajama
+running shoe
+abaya
+mortarboard
+academic gown
+Windsor tie
+bolo tie
+bow tie
+swimming trunks
+bonnet
+#ACCESSORIES
+handkerchief
+necklace
+mailbag
+mask
+CD player
+water bottle
+perfume
+backpack
+purse
+bow tie
+bolo tie
+stole
+Windsor tie
+cellular telephone
+wallet
+cassette player
+tape player
+iPod
+lens cap
+reflex camera
+wig
+lipstick
+umbrella
+#HOUSEHOLD ITEMS
+tray
+shower curtain
+carton
+ashcan
+safe
+plate
+plate rack
+thimble
+cocktail shaker
+tub
+spindle
+bathing cap
+teddy bear
+Christmas stocking
+water jug
+wooden spoon
+shoji
+pot
+hamper
+rubber eraser
+hair slide
+coffee mug
+pitcher
+television
+measuring cup
+piggy bank
+dial telephone
+soap dispenser
+vase
+milk can
+paper towel
+pillow
+toilet tissue
+cassette
+ladle
+washbasin
+ballpoint
+bath towel
+window screen
+window shade
+pill bottle
+shower cap
+swab
+mixing bowl
+lampshade
+dishrag
+pencil box
+goblet
+broom
+doormat
+quilt
+tape player
+clog
+iPod
+matchstick
+lens cap
+reflex camera
+fire screen
+fountain pen
+bib
+saltshaker
+plastic bag
+diaper
+Band Aid
+rubber nipple
+monitor
+#RECREATION
+balance beam
+ski
+maypole
+scoreboard
+knee pad
+crash helmet
+ski mask
+football helmet
+crossword puzzle
+golf ball
+baseball
+tennis ball
+volleyball
+basketball
+rugby ball
+soccer ball
+parallel bars
+horizontal bar
+dumbbell
+barbell
+parachute
+television
+radio
+ballplayer
+water bottle
+jigsaw puzzle
+scuba diver
+comic book
+slot
+ping-pong ball
+punching bag
+reflex camera
+sleeping bag
+racket
+#FOOD
+dough
+espresso
+pizza
+bagel
+French loaf
+mashed potato
+bell pepper
+head cabbage
+broccoli
+cauliflower
+zucchini
+spaghetti squash
+acorn squash
+butternut squash
+cucumber
+artichoke
+cardoon
+mushroom
+potpie
+wine bottle
+hot pot
+meat loaf
+soup bowl
+beer bottle
+beer glass
+pop bottle
+bottlecap
+trifle
+chocolate sauce
+red wine
+whiskey jug
+eggnog
+ice cream
+ice lolly
+pretzel
+cheeseburger
+carbonara
+hotdog
+burrito
+guacamole
+consomme
+#FUNGI
+coral fungus
+stinkhorn
+gyromitra
+bolete
+agaric
+earthstar
+hen-of-the-woods

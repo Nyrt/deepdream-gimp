@@ -289,7 +289,6 @@ class gui(Tk):
         self.detail.set("15")
         detail_label = Label(basic, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
         detail_box = Spinbox(basic, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
-        tip.bind(detail_label, "The number of iterations per octave")
 
         # Strength
         self.strength = StringVar(self)

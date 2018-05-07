@@ -1,0 +1,200 @@
+dummy
+kit fox
+lesser panda
+Egyptian cat
+ibex
+Persian cat
+cougar
+gazelle
+porcupine
+badger
+mink
+African elephant
+red wolf
+jaguar
+hyena
+meerkat
+titi
+three-toed sloth
+sorrel
+black-footed ferret
+skunk
+weasel
+bighorn
+fox squirrel
+tiger cat
+impala
+coyote
+brown bear
+red fox
+hartebeest
+grey fox
+mongoose
+tiger
+wild boar
+zebra
+ram
+leopard
+Siamese cat
+guinea pig
+white wolf
+ice bear
+ox
+warthog
+Arabian camel
+hare
+hog
+snow leopard
+dingo
+hamster
+Arctic fox
+water buffalo
+American black bear
+Angora
+bison
+hippopotamus
+giant panda
+tabby
+armadillo
+polecat
+marmot
+llama
+wood rabbit
+lion
+Indian elephant
+beaver
+Madagascar cat
+lynx
+timber wolf
+cheetah
+sloth bear
+otter
+koala
+tusker
+echidna
+wallaby
+platypus
+wombat
+revolver
+strawberry
+wreck
+missile
+Granny Smith
+orange
+lemon
+fig
+pineapple
+banana
+jackfruit
+custard apple
+pomegranate
+acorn
+hip
+ear of corn
+rapeseed
+corn
+buckeye
+daisy
+yellow lady's slipper
+bullfrog
+tree frog
+tailed frog
+vending machine
+sewing machine
+joystick
+switch
+hook
+car wheel
+paddlewheel
+pinwheel
+potter's wheel
+gas pump
+carousel
+swing
+reel
+radiator
+puck
+hard disc
+sunglass
+pick
+car mirror
+solar dish
+remote control
+disk brake
+buckle
+knot
+combination lock
+padlock
+safety pin
+muzzle
+seat belt
+candle
+jack-o'-lantern
+spotlight
+torch
+neck brace
+pier
+tripod
+mousetrap
+spider web
+honeycomb
+pedestal
+manhole cover
+modem
+prayer rug
+book jacket
+tile roof
+maillot
+Petri dish
+holster
+photocopier
+shield
+menu
+stage
+face powder
+scabbard
+sunscreen
+wool
+hay
+bucket
+mortar
+paddle
+chain
+binder
+birdhouse
+pay-phone
+groom
+bearskin
+pencil sharpener
+mosquito net
+crutch
+Polaroid camera
+space bar
+cup
+traffic light
+quill
+cuirass
+envelope
+bathtub
+lotion
+hair spray
+crate
+chain mail
+theater curtain
+barrel
+mailbox
+packet
+maze
+pole
+pickelhaube
+rain barrel
+street sign
+breastplate
+shopping basket
+stretcher
+velvet
+gasmask
+thatch
+vault
+beaker
+bubble
