@@ -25,7 +25,7 @@ dir2 = ""
 if opsys == "linux" or opsys == "linux2" or opsys == "linux3":
     # using linux os
     dir1 = "/usr/lib/gimp/2.0/plug-ins/"
-    dir2 = ""
+    dir2 = ".gimp-2.8/plug-ins/"
 elif opsys == "darwin":
     # using mac os
     dir1 = "/Applications/GIMP.app/Contents/Resources/lib/gimp/2.0/plug-ins/"
