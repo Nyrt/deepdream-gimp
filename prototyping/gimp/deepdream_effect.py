@@ -235,8 +235,8 @@ def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octa
                 if feature == 'I001':
                     feature = 0
                 else:
-                    feature = int(feature) - 1
-                print(feature)
+                    feature = int(feature)
+                # print(feature)
                 if feature <= len(class_names):
                     if target_class == None:
                         target_class = T(layer)[:,feature]
@@ -245,7 +245,7 @@ def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octa
                         target_class += T(layer)[:,feature]
                         layer_name += " x " + class_names[feature]
 
-    print(target_class)
+    # print(target_class)
 
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)

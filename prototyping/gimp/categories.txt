@@ -169,6 +169,13 @@ impala
 zebra
 ox
 llama
+#Mustelidae (weasel-like)
+mink
+meerkat
+black-footed ferret
+skunk
+weasel
+otter
 #Bears
 sloth bear
 American black bear
@@ -188,13 +195,6 @@ Arctic fox
 kit fox
 dingo
 mongoose
-#Mustelidae (weasel-like)
-mink
-meerkat
-black-footed ferret
-skunk
-weasel
-otter
 #Other mammals
 lesser panda
 echidna
