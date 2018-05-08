@@ -720,6 +720,7 @@ stage
 pedestal
 birdhouse
 mailbox
+radiator
 #Buildings & Structures
 altar
 triumphal arch
@@ -973,7 +974,6 @@ ladle
 espresso maker
 microwave
 Dutch oven
-radiator
 rotisserie
 toaster
 waffle iron
