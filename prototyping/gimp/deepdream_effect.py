@@ -282,7 +282,7 @@ class gui(Tk):
     def __init__(self, timg, tdrawable, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
         self.title("Deep Dream Plugin")
-        self.geometry("770x540+32+32")
+        self.geometry("770x550+32+32")
 
         #tab menu
         nb = Notebook(self)
@@ -292,7 +292,7 @@ class gui(Tk):
         ## Basic options
         # Detail
         self.detail = StringVar(self)
-        self.detail.set("15")
+        self.detail.set("10")
         detail_label = Label(basic, text="Detail:", font=("Arial", 10)).place(x = 20, y = 25)
         detail_box = Spinbox(basic, textvariable=self.detail, from_=1, to=100).place(x = 112, y = 20, width = 128, height = 32)
         # tip.bind(detail_label, "The number of iterations per octave")
@@ -414,8 +414,8 @@ class gui(Tk):
             print(features)
             python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octave_n = int(self.octave_n.get()), octave_scale = float(self.octave_scale.get()))
 
-        Button(self, text = "Cancel", command = self.destroy).place(x = 585, y = 510)
-        Button(self, text = "Run", command=run).place(x = 675, y = 510)
+        Button(self, text = "Cancel", command = self.destroy).place(x = 585, y = 520)
+        Button(self, text = "Run", command=run).place(x = 675, y = 520)
 
         width = tdrawable.width
         height = tdrawable.height
