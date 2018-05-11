@@ -1,14 +1,14 @@
-# DeepDream Gimp Plug-in
+# DeepDream GIMP Plug-in
 
 In recent years there has been a dearth of deep learning algorithms and techniques, including many that can be used for artistic purposes, such as Deepdream, neural style transfer, and more. However, many of these still require a significant amount of technical skill to use, making them inaccessible to the vast majority of artists who would potentially use them
 
-This plug-in for Gimp allows users to filter layers of an image by augmenting them with features learned by deep vision networks. The network currently used by this plug-in is an implementation of Google’s Inception network trained on the ImageNet dataset, labelled by 1001 different objects, animals, or land features. Users can add features from one or many classes, choose the number of iterations over which the features are added and the strength of the change made per iteration. 
+This plug-in for GIMP allows users to filter layers of an image by augmenting them with features learned by deep vision networks. The network currently used by this plug-in is an implementation of Google’s Inception network trained on the ImageNet dataset, labelled by 1001 different objects, animals, or land features. Users can add features from one or many classes, choose the number of iterations over which the features are added and the strength of the change made per iteration. 
 
 The purpose of this project is to provide artists with access to the Google DeepDream engine in an environment that they are already familiar with. DeepDream is a new technology that has mostly stayed within the confines of the machine learning community, but it has great artistic potential. By creating a plug-in for an image-editing program like GIMP, artists are able to use this new technology in a way that’s easily integrable into their existing workflow.
 
 ## Software Components
 
-The graphical user interface for the main program is implemented using the library Tkinter, the network operations are implemented using the library Tensorflow, the layers to be processed are queried via the gimp interface, and the functions are called by a registration wrapper which registers the plugin to gimp.
+The graphical user interface for the main program is implemented using the library Tkinter, the network operations are implemented using the library Tensorflow, the layers to be processed are queried via the GIMP interface, and the functions are called by a registration wrapper which registers the plugin to GIMP.
 
 The GUI consists of a window with two numerical parameter boxes, three depth selection checkboxes, and a scroll box with folders for selecting or multiple-selecting the class to perform the effect with. There is another tab for selecting more advanced options and an area for viewing a preview of the effect as it’s being generated.
 
@@ -23,7 +23,7 @@ In its current state, this plug-in requires users to be using Ubuntu as their op
 ### Install dependencies:
 
 The deepdream plug-in requires:
-Gimp
+GIMP
 Python 2
 Gimpfu
 Tensorflow
@@ -105,11 +105,11 @@ Same image with "Radio" dreamed onto it:
 
 Original Image:
 
-![An image of a house in front of a mountain](../examples/house.png)
+![An image of a house in front of a mountain](../examples/house.jpg)
 
 Same image with "Monolith" dreamed onto it:
 
-![An image of a house with deep-dreamed monolith](examples/house_monolith.png)
+![An image of a house with deep-dreamed monolith](examples/house_monolith.jpg)
 
 Original Image:
 
@@ -125,7 +125,7 @@ Original Image:
 
 Same image with "eel" dreamed onto it:
 
-![An image of lemons with deep-dreamed eels](../examples/tubingen_eel.png)
+![An image of lemons with deep-dreamed eels](../examples/tubingen_eel.jpg)
 
 Additional examples can be found in the “examples” directory.
 
