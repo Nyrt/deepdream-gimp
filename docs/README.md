@@ -109,7 +109,7 @@ Original Image:
 
 Same image with "Monolith" dreamed onto it:
 
-![An image of a house with deep-dreamed monolith](examples/house_monolith.jpg)
+![An image of a house with deep-dreamed monolith](examples/house_monolith.png)
 
 Original Image:
 
