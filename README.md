@@ -93,6 +93,10 @@ If you have CUDA, CUDNN, and GPU Tensorflow installed, it should automatically b
 
 **Use only the “Shallow” layer.** In general, the “Shallow” layer is faster as fewer computations.
 
+## Examples
+
+Examples of output can be found in the “examples” directory.
+
 ## Future Improvements
 
 Right now the plugin only generates features based on the gradients with respect to one network, trained on classification of images based on the objects in the image. However, one big addition we could make to the plug-in would be the ability to choose from other networks, trained on other things, such as the generator or discriminator of a Generative Adversarial Network, or a network trained on segmentation rather than classification.
