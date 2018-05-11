@@ -10,10 +10,10 @@ from gimpfu import *
 import os
 from io import BytesIO
 import numpy as np
-from functools import partial
+#from functools import partial
 import PIL.Image as Im
 import PIL.ImageTk as ImTk
-from IPython.display import clear_output, Image, display, HTML
+#from IPython.display import clear_output, Image, display, HTML
 import sys
 
 import tensorflow as tf
@@ -165,7 +165,7 @@ def render_deepdream(t_obj, img0=img_noise,
 
             update_preview_window(img)
             print('.',end = ' ')
-        clear_output()
+        #clear_output()
         #showarray(img/255.0)
     return img/255.0
 
