@@ -34,8 +34,7 @@ from ttk import *
 # print(error)
 
 # Try doing this with different models? It might just *work*
-os.chdir(os.path.expanduser("~"))
-os.chdir(os.path.expanduser(".gimp-2.8/plug-ins"))
+os.chdir(os.path.expanduser("~") + "/.gimp-2.8/plug-ins")
 model_fn = 'tensorflow_inception_graph.pb'
 
 config = tf.ConfigProto()
