@@ -50,7 +50,7 @@ The GUI includes the following parameters:
 
 ### The “Basic” tab
 
-![The “Basic” tab of the GUI](docs/ui_basic.png)
+![The “Basic” tab of the GUI](../docs/ui_basic.png)
 
 **Detail:** 
 This controls the number of iterations performed per octave, and roughly corresponds to the amount of fine detail the network will be able to produce and also the total strength of the effect. Note that runtime increases as this value is increased.
@@ -68,7 +68,7 @@ A note on the “Debug” class-- this class emphasizes any and all features obs
 
 ### The “Advanced” tab
 
-![The “advanced” tab of the GUI](docs/ui_advanced.png)
+![The “advanced” tab of the GUI](../docs/ui_advanced.png)
 
 The parameters in this tab require some understanding of how this version of deepdream is implemented. In order to speed up computation, allow the use of arbitrarily-sized images, and have better robustness to scale, we perform the effect on the image at different scales.
 
@@ -97,15 +97,15 @@ If you have CUDA, CUDNN, and GPU Tensorflow installed, it should automatically b
 
 Original Image:
 
-![An image of space](examples/space.png)
+![An image of space](../examples/space.png)
 
 Same image with "Radio" dreamed onto it:
 
-![An image of space with deep-dreamed radios](examples/space_radio.png)
+![An image of space with deep-dreamed radios](../examples/space_radio.png)
 
 Original Image:
 
-![An image of a house in front of a mountain](examples/house.png)
+![An image of a house in front of a mountain](../examples/house.png)
 
 Same image with "Monolith" dreamed onto it:
 
@@ -113,19 +113,19 @@ Same image with "Monolith" dreamed onto it:
 
 Original Image:
 
-![An image of lemons](examples/lemons.png)
+![An image of lemons](../examples/lemons.png)
 
 Same image with "Maze" dreamed onto it:
 
-![An image of lemons with deep-dreamed maze](examples/lemons_maze.png)
+![An image of lemons with deep-dreamed maze](../examples/lemons_maze.png)
 
 Original Image:
 
-![An image of Tubingen](examples/tubingen.jpg)
+![An image of Tubingen](../examples/tubingen.jpg)
 
 Same image with "eel" dreamed onto it:
 
-![An image of lemons with deep-dreamed eels](examples/tubingen_eel.png)
+![An image of lemons with deep-dreamed eels](../examples/tubingen_eel.png)
 
 Additional examples can be found in the “examples” directory.
 
