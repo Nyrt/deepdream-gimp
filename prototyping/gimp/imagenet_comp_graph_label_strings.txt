@@ -1,4 +1,4 @@
-dummy
+debug
 kit fox
 English setter
 Siberian husky
@@ -327,7 +327,7 @@ custard apple
 pomegranate
 acorn
 hip
-ear of corn
+ear
 rapeseed
 corn
 buckeye
@@ -913,7 +913,7 @@ gown
 window screen
 agaric
 cellular telephone
-rubber nipple
+nipple
 barbell
 mailbox
 lab coat
@@ -966,7 +966,7 @@ plastic bag
 reflex camera
 diaper
 Band Aid
-ice lolly
+popsicle
 velvet
 tennis ball
 gasmask
@@ -998,4 +998,4 @@ coffee mug
 rubber eraser
 stole
 carbonara
-dumbbell 
+dumbbell

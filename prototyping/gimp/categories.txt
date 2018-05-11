@@ -1,4 +1,4 @@
-dummy
+debug
 #Dogs
 English setter
 Siberian husky
@@ -1018,7 +1018,7 @@ red wine
 whiskey jug
 eggnog
 ice cream
-ice lolly
+popsicle
 pretzel
 cheeseburger
 carbonara
