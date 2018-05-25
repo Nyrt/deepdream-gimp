@@ -249,10 +249,19 @@ def python_deepdream(timg, tdrawable, iter_n, step, layers, features, seed, octa
     img0 = channelData(tdrawable)
     img0 = np.float32(img0)
 
+
+    alpha = None
+
+    if img0.shape[2] == 4:
+        alpha = img0[:,:,3] / 255.0
+        img0 = img0[:,:,:3]
+
     result = render_deepdream(target_class, img0, iter_n, step, octave_n = octave_n, octave_scale=octave_scale, seed=seed)
     pdb.gimp_progress_update(1.0)
 
     result = np.clip(result, 0, 1)
+    if alpha != None:
+        result = np.concatenate((result, alpha[:,:,None]), -1)
 
     createResultLayer(timg, layer_name, result*255.0)
 
