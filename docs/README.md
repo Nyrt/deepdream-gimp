@@ -1,6 +1,6 @@
 # DeepDream GIMP Plug-in
 
-In recent years there has been a dearth of deep learning algorithms and techniques, including many that can be used for artistic purposes, such as Deepdream, neural style transfer, and more. However, many of these still require a significant amount of technical skill to use, making them inaccessible to the vast majority of artists who would potentially use them
+In recent years there has been a seemingly exponential explosion of machine learning algorithms and techniques, including many that can be used for artistic purposes, such as Deepdream, neural style transfer, and more. However, many of these still require a significant amount of technical skill to use, making them inaccessible to the vast majority of artists who would potentially use them
 
 This plug-in for GIMP allows users to filter layers of an image by augmenting them with features learned by deep vision networks. The network currently used by this plug-in is an implementation of Google’s Inception network trained on the ImageNet dataset, labelled by 1001 different objects, animals, or land features. Users can add features from one or many classes, choose the number of iterations over which the features are added and the strength of the change made per iteration. 
 
